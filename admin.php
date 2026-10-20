@@ -36,33 +36,14 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="style.css" />
     <script src="theme.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <style>  
-        html {
-            position: relative;
-            min-height: 100%;
-        }
-        
-        body {
-            margin-bottom: 100px; /* Margin bottom by footer height */
-        }
-        
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100px; /* Set the fixed height of the footer here */
-            background: var(--tint);
-            border-top: 1px solid var(--line);
-        }
-    </style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-sm site-nav sticky-top">
+    <nav class="navbar navbar-expand-md site-nav sticky-top">
         <div class="container">
             <a class="navbar-brand" href="">Jia's Daily Journal</a>
             <button
-            class="navbar-toggler"
+            class="navbar-toggler border-0"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -73,7 +54,7 @@ if (!isset($_SESSION['username'])) {
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-sm-center gap-sm-1">
+                <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-md-center gap-md-1">
                     <li class="nav-item">
                         <a class="nav-link" href="admin.php?page=dashboard">Dashboard</a>
                     </li>
@@ -95,7 +76,7 @@ if (!isset($_SESSION['username'])) {
                             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item ms-sm-2 mt-2 mt-sm-0">
+                    <li class="nav-item ms-md-2 mt-2 mt-md-0">
                         <button type="button" class="theme-toggle" id="theme-toggle" title="Ganti tema" aria-label="Ganti tema">
                             <i class="bi bi-moon-stars-fill icon-moon"></i>
                             <i class="bi bi-brightness-high-fill icon-sun"></i>
@@ -108,7 +89,7 @@ if (!isset($_SESSION['username'])) {
     <!-- Navbar End -->
 
     <!-- Content -->
-    <section id="content" class="p-5">
+    <section id="content" class="p-5 flex-grow-1">
         <div class="container">
             <?php
             if (isset($_GET['page'])) {
@@ -133,14 +114,13 @@ if (!isset($_SESSION['username'])) {
     <!-- Content End -->
 
     <!-- Footer -->
-    <footer class="text-center p-3 site-footer">
-        <div class="social">
-            <a href="https://www.instagram.com/shaziaaam" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/shaziaaam/" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i></a>
-            <a href="https://wa.me/628812406778" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i></a>
-            <a href="mailto:shaziaaaam@gmail.com"><i class="bi bi-envelope-fill"></i></a>
+    <footer id="footer" class="site-footer text-center py-5">
+        <div class="social mb-3">
+            <a href="https://www.instagram.com/shaziaaam" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/shaziaaam/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="https://wa.me/628812406778" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="mailto:shaziaaaam@gmail.com" aria-label="Email"><i class="bi bi-envelope-fill"></i></a>
         </div>
-        <br/>
         <div>
             Copyright &copy; 2024 - <span>Shazia Mirza.</span> All Right Reserved.
         </div>
