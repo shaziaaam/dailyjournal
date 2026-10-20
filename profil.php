@@ -10,10 +10,8 @@ if (!isset($_SESSION['username'])) {
 // Ambil data user berdasarkan username dari session
 $username = $_SESSION['username'];
 $stmt = $conn->prepare("SELECT * FROM user WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$stmt->execute([$username]);
+$user = $stmt->fetch();
 
 if (!$user) {
     echo "<script>alert('User tidak ditemukan!'); document.location='logout.php';</script>";
@@ -79,16 +77,16 @@ if (isset($_POST['simpan'])) {
     if (!empty($password)) {
         $password_hashed = md5($password); // Hash password dengan MD5
         $stmt = $conn->prepare("UPDATE user SET password = ?, foto = ? WHERE id = ?");
-        $stmt->bind_param("ssi", $password_hashed, $foto_baru, $id);
+        $params = [$password_hashed, $foto_baru, $id];
     } else {
         $stmt = $conn->prepare("UPDATE user SET foto = ? WHERE id = ?");
-        $stmt->bind_param("si", $foto_baru, $id);
+        $params = [$foto_baru, $id];
     }
 
-    if ($stmt->execute()) {
+    if ($stmt->execute($params)) {
         echo "<script>alert('Data berhasil diperbarui!'); document.location='profil.php';</script>";
     } else {
-        echo "<script>alert('Data gagal diperbarui: " . $conn->error . "');</script>";
+        echo "<script>alert('Data gagal diperbarui: " . $stmt->errorInfo()[2] . "');</script>";
     }
 }
 ?>

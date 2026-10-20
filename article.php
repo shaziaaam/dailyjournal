@@ -119,15 +119,13 @@ if (isset($_POST['simpan'])) {
                                 username = ?
                                 WHERE id = ?");
 
-        $stmt->bind_param("sssssi", $judul, $isi, $gambar, $tanggal, $username, $id);
-        $simpan = $stmt->execute();
+        $simpan = $stmt->execute([$judul, $isi, $gambar, $tanggal, $username, $id]);
     } else {
 		    //jika tidak ada id, lakukan insert data baru
         $stmt = $conn->prepare("INSERT INTO article (judul,isi,gambar,tanggal,username)
                                 VALUES (?,?,?,?,?)");
 
-        $stmt->bind_param("sssss", $judul, $isi, $gambar, $tanggal, $username);
-        $simpan = $stmt->execute();
+        $simpan = $stmt->execute([$judul, $isi, $gambar, $tanggal, $username]);
     }
 
     if ($simpan) {
@@ -142,8 +140,6 @@ if (isset($_POST['simpan'])) {
         </script>";
     }
 
-    $stmt->close();
-    $conn->close();
 }
 
 //jika tombol hapus diklik
@@ -158,8 +154,7 @@ if (isset($_POST['hapus'])) {
 
     $stmt = $conn->prepare("DELETE FROM article WHERE id =?");
 
-    $stmt->bind_param("i", $id);
-    $hapus = $stmt->execute();
+    $hapus = $stmt->execute([$id]);
 
     if ($hapus) {
         echo "<script>
@@ -173,7 +168,5 @@ if (isset($_POST['hapus'])) {
         </script>";
     }
 
-    $stmt->close();
-    $conn->close();
 }
 ?>

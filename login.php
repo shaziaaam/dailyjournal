@@ -21,17 +21,11 @@
                             FROM user 
                             WHERE username=? AND password=?");
 
-    //parameter binding 
-    $stmt->bind_param("ss", $username, $password);//username string dan password string
-    
-    //database executes the statement
-    $stmt->execute();
-    
-    //menampung hasil eksekusi
-    $hasil = $stmt->get_result();
-    
-    //mengambil baris dari hasil sebagai array asosiatif
-    $row = $hasil->fetch_array(MYSQLI_ASSOC);
+    //database executes the statement dengan parameter username dan password
+    $stmt->execute([$username, $password]);
+
+    //mengambil baris hasil sebagai array asosiatif
+    $row = $stmt->fetch();
 
     //check apakah ada baris hasil data user yang cocok
     if (!empty($row)) {
@@ -45,9 +39,6 @@
         header("location:login.php");
     }
 
-        //menutup koneksi database
-    $stmt->close();
-    $conn->close();
     } else {
     ?>
     <!DOCTYPE html>

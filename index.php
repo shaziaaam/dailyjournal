@@ -106,7 +106,7 @@
             $sql = "SELECT * FROM article ORDER BY tanggal DESC";
             $hasil = $conn->query($sql); 
 
-            while($row = $hasil->fetch_assoc()){
+            while($row = $hasil->fetch()){
             ?>
                 <div class="col">
                 <div class="card h-100">
@@ -144,7 +144,7 @@
             $hasil = $conn->query($sql);
             $isActive = true; 
 
-            while($row = $hasil->fetch_assoc()){
+            while($row = $hasil->fetch()){
                 $activeClass = $isActive ? 'active' : '';
                 $isActive = false;
             ?>

@@ -89,26 +89,24 @@ if (isset($_POST['simpan'])) {
         }
 
         $stmt = $conn->prepare("UPDATE gallery SET gambar = ?, tanggal = ?, username = ? WHERE id = ?");
-        $stmt->bind_param("sssi", $gambar, $tanggal, $username, $id);
+        $params = [$gambar, $tanggal, $username, $id];
     } else {
         $stmt = $conn->prepare("INSERT INTO gallery (gambar, tanggal, username) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $gambar, $tanggal, $username);
+        $params = [$gambar, $tanggal, $username];
     }
 
-    if ($stmt->execute()) {
+    if ($stmt->execute($params)) {
         echo "<script>
             alert('Simpan data sukses');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Simpan data gagal: " . $conn->error . "');
+            alert('Simpan data gagal: " . $stmt->errorInfo()[2] . "');
             document.location='admin.php?page=gallery';
         </script>";
     }
 
-    $stmt->close();
-    $conn->close();
 }
 
 // Jika tombol hapus diklik
@@ -121,21 +119,17 @@ if (isset($_POST['hapus'])) {
     }
 
     $stmt = $conn->prepare("DELETE FROM gallery WHERE id = ?");
-    $stmt->bind_param("i", $id);
-
-    if ($stmt->execute()) {
+    if ($stmt->execute([$id])) {
         echo "<script>
             alert('Hapus data sukses');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Hapus data gagal: " . $conn->error . "');
+            alert('Hapus data gagal: " . $stmt->errorInfo()[2] . "');
             document.location='admin.php?page=gallery';
         </script>";
     }
 
-    $stmt->close();
-    $conn->close();
 }
 ?>

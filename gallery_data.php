@@ -19,7 +19,7 @@
         $sql = "SELECT * FROM gallery ORDER BY tanggal DESC LIMIT $limit_start, $limit";
         $hasil = $conn->query($sql);
 
-        while ($row = $hasil->fetch_assoc()) {
+        while ($row = $hasil->fetch()) {
         ?>
             <tr>
                 <td class="text-center"><?= $no++ ?></td>
@@ -148,7 +148,7 @@
 <?php 
 $sql1 = "SELECT * FROM gallery";
 $hasil1 = $conn->query($sql1); 
-$total_records = $hasil1->num_rows;
+$total_records = count($hasil1->fetchAll());
 ?>
 <p>Total gallery : <?php echo $total_records; ?></p>
 <nav class="mb-2">

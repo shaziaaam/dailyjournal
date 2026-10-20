@@ -20,7 +20,7 @@
                     $sql = "SELECT * FROM article ORDER BY tanggal DESC LIMIT $limit_start, $limit";
                     $hasil = $conn->query($sql);
 
-                    while ($row = $hasil->fetch_assoc()) {
+                    while ($row = $hasil->fetch()) {
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
@@ -129,7 +129,7 @@
 <?php 
 $sql1 = "SELECT * FROM article";
 $hasil1 = $conn->query($sql1); 
-$total_records = $hasil1->num_rows;
+$total_records = count($hasil1->fetchAll());
 ?>
 <p>Total article : <?php echo $total_records; ?></p>
 <nav class="mb-2">
