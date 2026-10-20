@@ -8,12 +8,18 @@ $_SESSION['username'] = "admin";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Daily Journal | Admin</title>
-    <link rel="icon" href="img/logo.png" />
+    <link rel="icon" href="https://i.pinimg.com/736x/07/a7/11/07a7118298e6d8e6ee655a7046199ee9.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+    />
     <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
@@ -24,6 +30,8 @@ $_SESSION['username'] = "admin";
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
     crossorigin="anonymous"
     /> 
+    <link rel="stylesheet" href="style.css" />
+    <script src="theme.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>  
         html {
@@ -39,15 +47,17 @@ $_SESSION['username'] = "admin";
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 100px; /* Set the fixed height of the footer here */ 
+            height: 100px; /* Set the fixed height of the footer here */
+            background: var(--tint);
+            border-top: 1px solid var(--line);
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top bg-danger-subtle">
+    <nav class="navbar navbar-expand-sm site-nav sticky-top">
         <div class="container">
-            <a class="navbar-brand" href=""><b><i>Jia's Daily Journal</i></b></a>
+            <a class="navbar-brand" href="">Jia's Daily Journal</a>
             <button
             class="navbar-toggler"
             type="button"
@@ -60,7 +70,7 @@ $_SESSION['username'] = "admin";
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-dark">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-sm-center gap-sm-1">
                     <li class="nav-item">
                         <a class="nav-link" href="admin.php?page=dashboard">Dashboard</a>
                     </li>
@@ -74,12 +84,18 @@ $_SESSION['username'] = "admin";
                         <a class="nav-link" href="index.php?page=home"><b>Homepage</b></a>
                     </li> 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-danger fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <?= $_SESSION['username'] ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="admin.php?page=profil">Profile <?= $_SESSION['username'] ?></a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item ms-sm-2 mt-2 mt-sm-0">
+                        <button type="button" class="theme-toggle" id="theme-toggle" title="Ganti tema" aria-label="Ganti tema">
+                            <i class="bi bi-moon-stars-fill icon-moon"></i>
+                            <i class="bi bi-brightness-high-fill icon-sun"></i>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -93,7 +109,7 @@ $_SESSION['username'] = "admin";
             <?php
             if (isset($_GET['page'])) {
             ?>
-                <h4 class="lead display-6 pb-2 border-bottom border-danger-subtle"><?= ucfirst($_GET['page']) ?></h4>
+                <h4 class="admin-title display-6"><?= ucfirst($_GET['page']) ?></h4>
                 <?php
                 $page = basename($_GET['page']); // Hindari LFI
                 if (file_exists($page . ".php")) {
@@ -103,7 +119,7 @@ $_SESSION['username'] = "admin";
                 }
             } else {
             ?>
-                <h4 class="lead display-6 pb-2 border-bottom border-danger-subtle">Dashboard</h4>
+                <h4 class="admin-title display-6">Dashboard</h4>
                 <?php
                 include("dashboard.php");
             }
@@ -113,13 +129,13 @@ $_SESSION['username'] = "admin";
     <!-- Content End -->
 
     <!-- Footer -->
-    <footer class="text-center p-3 bg-danger-subtle">
-        <div>
-            <a href="http://surl.li/oxsat" target="_blank"><i class="bi bi-instagram h2 p-2 text-dark"></i></a>
-            <a href="http://surl.li/pozmdl" target="_blank"><i class="bi bi-twitter-x h2 p-2 text-dark"></i></a>
-            <a href="http://surl.li/jnbiwg" target="_blank"><i class="bi bi-youtube h2 p-2 text-dark"></i></a>
-            <a href="http://surl.li/uyeykk" target="_blank"><i class="bi bi-tiktok h2 p-2 text-dark"></i></a>
-            <a href="http://surl.li/oxskz" target="_blank"><i class="bi bi-whatsapp h2 p-2 text-dark"></i></a>
+    <footer class="text-center p-3 site-footer">
+        <div class="social">
+            <a href="http://surl.li/oxsat" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="http://surl.li/pozmdl" target="_blank"><i class="bi bi-twitter-x"></i></a>
+            <a href="http://surl.li/jnbiwg" target="_blank"><i class="bi bi-youtube"></i></a>
+            <a href="http://surl.li/uyeykk" target="_blank"><i class="bi bi-tiktok"></i></a>
+            <a href="http://surl.li/oxskz" target="_blank"><i class="bi bi-whatsapp"></i></a>
         </div>
         <br/>
         <div>

@@ -1,4 +1,4 @@
-<table class="table table-hover">
+<table class="table table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th class="text-center">No</th>
