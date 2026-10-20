@@ -263,11 +263,10 @@ $jadwal = [
     <!-- footer begin -->
     <footer id="footer" class="site-footer text-center py-5">
         <div class="social mb-3">
-            <a href="http://surl.li/oxsat" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            <a href="http://surl.li/pozmdl" target="_blank" aria-label="X"><i class="bi bi-twitter-x"></i></a>
-            <a href="http://surl.li/jnbiwg" target="_blank" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-            <a href="http://surl.li/uyeykk" target="_blank" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-            <a href="http://surl.li/oxskz" target="_blank" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://www.instagram.com/shaziaaam" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.youtube.com/@ziaaaasss" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            <a href="https://www.tiktok.com/@shajiaaas" target="_blank" rel="noopener" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="https://wa.me/628812406778" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
         </div>
         <div>
             Copyright &copy; 2024 - <span>Shazia Mirza.</span> All Right Reserved.

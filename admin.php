@@ -135,11 +135,10 @@ if (!isset($_SESSION['username'])) {
     <!-- Footer -->
     <footer class="text-center p-3 site-footer">
         <div class="social">
-            <a href="http://surl.li/oxsat" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="http://surl.li/pozmdl" target="_blank"><i class="bi bi-twitter-x"></i></a>
-            <a href="http://surl.li/jnbiwg" target="_blank"><i class="bi bi-youtube"></i></a>
-            <a href="http://surl.li/uyeykk" target="_blank"><i class="bi bi-tiktok"></i></a>
-            <a href="http://surl.li/oxskz" target="_blank"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://www.instagram.com/shaziaaam" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.youtube.com/@ziaaaasss" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
+            <a href="https://www.tiktok.com/@shajiaaas" target="_blank" rel="noopener"><i class="bi bi-tiktok"></i></a>
+            <a href="https://wa.me/628812406778" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i></a>
         </div>
         <br/>
         <div>
