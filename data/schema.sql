@@ -21,9 +21,9 @@ CREATE TABLE gallery (
     username TEXT
 );
 
--- akun login awal: jialucuk (password disimpan md5)
+-- akun login awal: jialucuk (password disimpan sebagai hash bcrypt)
 INSERT INTO user (username, password, foto)
-VALUES ('jialucuk', '71637b92d28d25a5774135d8740f9bc6', NULL);
+VALUES ('jialucuk', '$2y$10$nXNfr7P4AT75l9ImUCLX7u/FwoYTjXKVCeDpnNFyky/KVt8lfqluq', NULL);
 
 -- sample data: article
 INSERT INTO article (judul, isi, gambar, tanggal, username) VALUES

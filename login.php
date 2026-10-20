@@ -1,6 +1,6 @@
 <?php
-//memulai session atau melanjutkan session yang sudah ada
-session_start();
+//memulai session (cookie aman) atau melanjutkan session yang sudah ada
+include "session_init.php";
 
 //menyertakan code dari file koneksi
 include "koneksi.php";
@@ -14,24 +14,34 @@ if (isset($_SESSION['username'])) {
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['user'];
-
-    //menggunakan fungsi enkripsi md5 supaya sama dengan password yang tersimpan di database
-    $password = md5($_POST['pass']);
+    $username = (string)($_POST['user'] ?? '');
+    $password = (string)($_POST['pass'] ?? '');
 
     //prepared statement
-    $stmt = $conn->prepare("SELECT username
+    $stmt = $conn->prepare("SELECT username, password
                             FROM user
-                            WHERE username=? AND password=?");
+                            WHERE username=?");
 
-    //database executes the statement dengan parameter username dan password
-    $stmt->execute([$username, $password]);
+    //database executes the statement dengan parameter username
+    $stmt->execute([$username]);
 
     //mengambil baris hasil sebagai array asosiatif
     $row = $stmt->fetch();
 
-    //check apakah ada baris hasil data user yang cocok
+    $cocok = false;
     if (!empty($row)) {
+        if (password_verify($password, $row['password'])) {
+            $cocok = true;
+        } elseif (hash_equals($row['password'], md5($password))) {
+            //akun lama masih memakai md5: izinkan masuk lalu simpan ulang dengan hash yang aman
+            $cocok = true;
+            $upgrade = $conn->prepare("UPDATE user SET password = ? WHERE username = ?");
+            $upgrade->execute([password_hash($password, PASSWORD_DEFAULT), $row['username']]);
+        }
+    }
+
+    //check apakah username dan password cocok
+    if ($cocok) {
         //jika ada, simpan variable username pada session
         session_regenerate_id(true);
         $_SESSION['username'] = $row['username'];
@@ -41,7 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    //jika tidak ada (gagal), tampilkan pesan di halaman login
+    //jika gagal, tunda sebentar (memperlambat tebakan password) lalu tampilkan pesan di halaman login
+    usleep(600000);
     $error = "Incorrect username or password.";
 }
 ?>

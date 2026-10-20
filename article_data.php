@@ -1,3 +1,10 @@
+<?php
+include "session_init.php";
+if (!isset($_SESSION['username'])) {
+    http_response_code(403);
+    exit;
+}
+?>
 <table class="table table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
@@ -12,7 +19,7 @@
                     <?php
                     include "koneksi.php";
 
-                    $hlm = (isset($_POST['hlm'])) ? $_POST['hlm'] : 1;
+                    $hlm = max(1, (int)($_POST['hlm'] ?? 1));
                     $limit = 3;
                     $limit_start = ($hlm - 1) * $limit;
                     $no = $limit_start + 1;
@@ -25,28 +32,28 @@
                         <tr>
                             <td><?= $no++ ?></td>
                             <td>
-                                <strong><?= $row["judul"] ?></strong>
-                                <br>on: <?= $row["tanggal"] ?>
-                                <br>by: <?= $row["username"] ?>
+                                <strong><?= htmlspecialchars($row["judul"] ?? "") ?></strong>
+                                <br>on: <?= htmlspecialchars($row["tanggal"] ?? "") ?>
+                                <br>by: <?= htmlspecialchars($row["username"] ?? "") ?>
                             </td>
-                            <td><?= $row["isi"] ?></td>
+                            <td><?= htmlspecialchars($row["isi"] ?? "") ?></td>
                             <td>
                                 <?php
                                 if ($row["gambar"] != '') {
                                     if (file_exists('img/' . $row["gambar"] . '')) {
                                 ?>
-                                        <img src="img/<?= $row["gambar"] ?>" width="100">
+                                        <img src="img/<?= htmlspecialchars($row["gambar"] ?? "") ?>" width="100">
                                 <?php
                                     }
                                 }
                                 ?>
                             </td>
                             <td class="aksi">
-                                <a href="#" title="Edit" aria-label="Edit" class="btn-icon btn-icon-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil-square"></i></a>
-                                <a href="#" title="Delete" aria-label="Delete" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-trash3"></i></a>
+                                <a href="#" title="Edit" aria-label="Edit" class="btn-icon btn-icon-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= (int)$row["id"] ?>"><i class="bi bi-pencil-square"></i></a>
+                                <a href="#" title="Delete" aria-label="Delete" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= (int)$row["id"] ?>"><i class="bi bi-trash3"></i></a>
 
                                 <!-- Awal Modal Edit -->
-                                <div class="modal fade" id="modalEdit<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal fade" id="modalEdit<?= (int)$row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -57,12 +64,12 @@
                                                 <div class="modal-body">
                                                     <div class="mb-3">
                                                         <label for="formGroupExampleInput" class="form-label">Title</label>
-                                                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                                                        <input type="text" class="form-control" name="judul" placeholder="Enter the article title" value="<?= $row["judul"] ?>" required>
+                                                        <input type="hidden" name="id" value="<?= (int)$row["id"] ?>">
+                                                        <input type="text" class="form-control" name="judul" placeholder="Enter the article title" value="<?= htmlspecialchars($row["judul"] ?? "") ?>" required>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="floatingTextarea2">Content</label>
-                                                        <textarea class="form-control" placeholder="Write the article content" name="isi" required><?= $row["isi"] ?></textarea>
+                                                        <textarea class="form-control" placeholder="Write the article content" name="isi" required><?= htmlspecialchars($row["isi"] ?? "") ?></textarea>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="formGroupExampleInput2" class="form-label">Change Image</label>
@@ -74,12 +81,12 @@
                                                         if ($row["gambar"] != '') {
                                                             if (file_exists('img/' . $row["gambar"] . '')) {
                                                         ?>
-                                                                <br><img src="img/<?= $row["gambar"] ?>" width="100">
+                                                                <br><img src="img/<?= htmlspecialchars($row["gambar"] ?? "") ?>" width="100">
                                                         <?php
                                                             }
                                                         }
                                                         ?>
-                                                        <input type="hidden" name="gambar_lama" value="<?= $row["gambar"] ?>">
+                                                        <input type="hidden" name="gambar_lama" value="<?= htmlspecialchars($row["gambar"] ?? "") ?>">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -93,7 +100,7 @@
                                 <!-- Akhir Modal Edit -->
 
                                 <!-- Awal Modal Hapus -->
-                                <div class="modal fade" id="modalHapus<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal fade" id="modalHapus<?= (int)$row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -103,9 +110,9 @@
                                             <form method="post" action="" enctype="multipart/form-data">
                                                 <div class="modal-body">
                                                     <div class="mb-3">
-                                                        <label for="formGroupExampleInput" class="form-label">Are you sure you want to delete the article "<strong><?= $row["judul"] ?></strong>"?</label>
-                                                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                                                        <input type="hidden" name="gambar" value="<?= $row["gambar"] ?>">
+                                                        <label for="formGroupExampleInput" class="form-label">Are you sure you want to delete the article "<strong><?= htmlspecialchars($row["judul"] ?? "") ?></strong>"?</label>
+                                                        <input type="hidden" name="id" value="<?= (int)$row["id"] ?>">
+                                                        <input type="hidden" name="gambar" value="<?= htmlspecialchars($row["gambar"] ?? "") ?>">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -127,9 +134,7 @@
 </table>
 
 <?php 
-$sql1 = "SELECT * FROM article";
-$hasil1 = $conn->query($sql1); 
-$total_records = count($hasil1->fetchAll());
+$total_records = (int)$conn->query("SELECT COUNT(*) FROM article")->fetchColumn();
 ?>
 <p>Total articles: <?php echo $total_records; ?></p>
 <nav class="mb-2">

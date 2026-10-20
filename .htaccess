@@ -1,0 +1,7 @@
+# Jangan tampilkan isi folder
+Options -Indexes
+
+# Blokir file database dan skema agar tidak bisa diunduh
+<FilesMatch "\.(db|sqlite|sql)$">
+    Require all denied
+</FilesMatch>

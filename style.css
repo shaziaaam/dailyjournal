@@ -71,7 +71,7 @@ body {
     transition: background-color 0.25s, color 0.25s;
 }
 
-h1, h2, h3, .navbar-brand, .font-serif {
+h1, h2, h3, .navbar-brand {
     font-family: "Playfair Display", Georgia, serif;
 }
 
@@ -81,30 +81,6 @@ html {
 }
 
 /* ---------- tombol & komponen Bootstrap yang dipakai halaman admin ---------- */
-.btn-danger {
-    --bs-btn-color: var(--on-accent);
-    --bs-btn-bg: var(--accent);
-    --bs-btn-border-color: var(--accent);
-    --bs-btn-hover-color: var(--on-accent);
-    --bs-btn-hover-bg: var(--accent-strong);
-    --bs-btn-hover-border-color: var(--accent-strong);
-    --bs-btn-active-color: var(--on-accent);
-    --bs-btn-active-bg: var(--accent-strong);
-    --bs-btn-active-border-color: var(--accent-strong);
-}
-
-.btn-secondary {
-    --bs-btn-color: var(--accent-strong);
-    --bs-btn-bg: transparent;
-    --bs-btn-border-color: var(--accent);
-    --bs-btn-hover-color: var(--on-accent);
-    --bs-btn-hover-bg: var(--accent);
-    --bs-btn-hover-border-color: var(--accent);
-    --bs-btn-active-color: var(--on-accent);
-    --bs-btn-active-bg: var(--accent-strong);
-    --bs-btn-active-border-color: var(--accent-strong);
-}
-
 .text-bg-danger {
     color: var(--on-accent) !important;
 }
@@ -115,8 +91,7 @@ html {
     --bs-table-border-color: var(--line);
 }
 
-.form-control:focus,
-.form-select:focus {
+.form-control:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.2);
 }
@@ -917,18 +892,6 @@ html {
 }
 
 /* tombol bawaan Bootstrap yang masih biru diarahkan ke aksen */
-.btn-primary {
-    --bs-btn-bg: var(--accent);
-    --bs-btn-border-color: var(--accent);
-    --bs-btn-color: var(--on-accent);
-    --bs-btn-hover-bg: var(--accent-strong);
-    --bs-btn-hover-border-color: var(--accent-strong);
-    --bs-btn-hover-color: var(--on-accent);
-    --bs-btn-active-bg: var(--accent-strong);
-    --bs-btn-active-border-color: var(--accent-strong);
-    --bs-btn-active-color: var(--on-accent);
-}
-
 /* pagination */
 .pagination {
     --bs-pagination-color: var(--accent-strong);

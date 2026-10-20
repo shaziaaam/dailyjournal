@@ -77,22 +77,24 @@ if (isset($_POST['simpan'])) {
             $gambar = $cek_upload['message'];
         } else {
             echo "<script>
-                alert('" . $cek_upload['message'] . "');
+                alert(" . json_encode($cek_upload['message']) . ");
                 document.location='admin.php?page=gallery';
             </script>";
             die;
         }
     }
 
+    $gambar_lama = '';
     if (isset($_POST['id'])) {
-        $id = $_POST['id'];
+        $id = (int)$_POST['id'];
+
+        // Nama gambar lama diambil dari database, bukan dari form
+        $stmt = $conn->prepare("SELECT gambar FROM gallery WHERE id = ?");
+        $stmt->execute([$id]);
+        $gambar_lama = (string)$stmt->fetchColumn();
 
         if ($nama_gambar == '') {
-            $gambar = $_POST['gambar_lama'];
-        } else {
-            if (file_exists("img/" . $_POST['gambar_lama'])) {
-                unlink("img/" . $_POST['gambar_lama']);
-            }
+            $gambar = $gambar_lama;
         }
 
         $stmt = $conn->prepare("UPDATE gallery SET gambar = ?, tanggal = ?, username = ? WHERE id = ?");
@@ -103,13 +105,18 @@ if (isset($_POST['simpan'])) {
     }
 
     if ($stmt->execute($params)) {
+        // Jika ganti gambar, hapus file lama (jika tidak dipakai di tempat lain)
+        if ($nama_gambar != '' && $gambar_lama != '') {
+            hapus_gambar($conn, $gambar_lama);
+        }
+
         echo "<script>
             alert('Saved successfully');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Failed to save: " . $stmt->errorInfo()[2] . "');
+            alert(" . json_encode('Failed to save: ' . $stmt->errorInfo()[2]) . ");
             document.location='admin.php?page=gallery';
         </script>";
     }
@@ -118,22 +125,25 @@ if (isset($_POST['simpan'])) {
 
 // Jika tombol hapus diklik
 if (isset($_POST['hapus'])) {
-    $id = $_POST['id'];
-    $gambar = $_POST['gambar'];
+    $id = (int)$_POST['id'];
 
-    if ($gambar != '' && file_exists("img/" . $gambar)) {
-        unlink("img/" . $gambar);
-    }
+    // Nama gambar diambil dari database, bukan dari form
+    $stmt = $conn->prepare("SELECT gambar FROM gallery WHERE id = ?");
+    $stmt->execute([$id]);
+    $gambar = (string)$stmt->fetchColumn();
 
     $stmt = $conn->prepare("DELETE FROM gallery WHERE id = ?");
     if ($stmt->execute([$id])) {
+        // Hapus file gambar jika tidak dipakai di tempat lain
+        hapus_gambar($conn, $gambar);
+
         echo "<script>
             alert('Deleted successfully');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Failed to delete: " . $stmt->errorInfo()[2] . "');
+            alert(" . json_encode('Failed to delete: ' . $stmt->errorInfo()[2]) . ");
             document.location='admin.php?page=gallery';
         </script>";
     }

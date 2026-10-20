@@ -1,5 +1,5 @@
 <?php
-session_start();
+include "session_init.php";
 
 include "koneksi.php";  
 
@@ -69,10 +69,10 @@ if (!isset($_SESSION['username'])) {
                     </li> 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?= $_SESSION['username'] ?>
+                        <?= htmlspecialchars($_SESSION['username']) ?>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="admin.php?page=profil">Profile <?= $_SESSION['username'] ?></a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=profil">Profile <?= htmlspecialchars($_SESSION['username']) ?></a></li>
                             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
                     </li>
@@ -92,21 +92,20 @@ if (!isset($_SESSION['username'])) {
     <section id="content" class="p-5 flex-grow-1">
         <div class="container">
             <?php
-            if (isset($_GET['page'])) {
+            // hanya halaman yang terdaftar yang boleh dimuat
+            $halaman = ['dashboard' => 'Dashboard', 'article' => 'Article', 'gallery' => 'Gallery', 'profil' => 'Profile'];
+            $page = $_GET['page'] ?? 'dashboard';
+
+            if (isset($halaman[$page])) {
             ?>
-                <h4 class="admin-title display-6"><?= $_GET['page'] === 'profil' ? 'Profile' : htmlspecialchars(ucfirst($_GET['page'])) ?></h4>
+                <h4 class="admin-title display-6"><?= $halaman[$page] ?></h4>
                 <?php
-                $page = basename($_GET['page']); // Hindari LFI
-                if (file_exists($page . ".php")) {
-                    include($page . ".php");
-                } else {
-                    echo "<p>Page not found.</p>";
-                }
+                include($page . ".php");
             } else {
             ?>
-                <h4 class="admin-title display-6">Dashboard</h4>
-                <?php
-                include("dashboard.php");
+                <h4 class="admin-title display-6">Not found</h4>
+                <p>Page not found.</p>
+            <?php
             }
             ?>
         </div>

@@ -21,12 +21,9 @@ if (!$user) {
 
 <div class="container mt-4">
     <form method="post" action="" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-        <input type="hidden" name="foto_lama" value="<?php echo $user['foto']; ?>">
-
         <div class="mb-3">
             <label for="password" class="form-label" style="font-size: 18px;">Change Password</label>
-            <input type="password" class="form-control" name="password" placeholder="Enter a new password only if you want to change it">
+            <input type="password" class="form-control" name="password" placeholder="Enter a new password only if you want to change it" autocomplete="new-password">
         </div>
         <div class="mb-3">
             <label for="foto" class="form-label" style="font-size: 18px;">Change Profile Photo</label>
@@ -34,7 +31,11 @@ if (!$user) {
         </div>
         <div class="mb-3">
             <label for="foto" class="form-label" style="font-size: 18px;">Current Profile Photo</label><br>
-            <img src="img/<?php echo htmlspecialchars($user['foto']); ?>" width="100px">
+            <?php if (!empty($user['foto']) && is_file("img/" . $user['foto'])) { ?>
+                <img src="img/<?= htmlspecialchars($user['foto']) ?>" width="100px" alt="Profile photo">
+            <?php } else { ?>
+                <span class="text-secondary">No profile photo yet.</span>
+            <?php } ?>
         </div>
         <button type="submit" name="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
     </form>
@@ -43,39 +44,28 @@ if (!$user) {
 <?php
 // Tombol simpan
 if (isset($_POST['simpan'])) {
-    $id = $_POST['id'];
-    $password = $_POST['password'];
-    $foto_lama = $_POST['foto_lama'];
+    // id dan foto lama diambil dari akun yang sedang login, bukan dari form
+    $id = $user['id'];
+    $password = (string)$_POST['password'];
+    $foto_lama = (string)$user['foto'];
     $foto_baru = $foto_lama;
 
     // Proses upload foto jika ada
-    if ($_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "img/";
-        $target_file = $target_dir . basename($_FILES['foto']['name']);
-        $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    if ($_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+        include_once "upload_foto.php";
+        $cek_upload = upload_foto($_FILES['foto']);
 
-        // Validasi format file
-        if (in_array($file_type, ['jpg', 'jpeg', 'png'])) {
-            if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
-                $foto_baru = basename($_FILES['foto']['name']);
-
-                // Hapus foto lama jika ada
-                if ($foto_lama && file_exists("img/$foto_lama")) {
-                    unlink("img/$foto_lama");
-                }
-            } else {
-                echo "<script>alert('Error uploading the photo.');</script>";
-                exit;
-            }
+        if ($cek_upload['status']) {
+            $foto_baru = $cek_upload['message'];
         } else {
-            echo "<script>alert('File format not allowed.');</script>";
+            echo "<script>alert(" . json_encode($cek_upload['message']) . ");</script>";
             exit;
         }
     }
 
     // Proses update ke database
-    if (!empty($password)) {
-        $password_hashed = md5($password); // Hash password dengan MD5
+    if ($password !== '') {
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("UPDATE user SET password = ?, foto = ? WHERE id = ?");
         $params = [$password_hashed, $foto_baru, $id];
     } else {
@@ -84,9 +74,14 @@ if (isset($_POST['simpan'])) {
     }
 
     if ($stmt->execute($params)) {
-        echo "<script>alert('Profile updated successfully!'); document.location='profil.php';</script>";
+        // Hapus foto lama jika sudah diganti dan tidak dipakai di tempat lain
+        if ($foto_baru !== $foto_lama) {
+            include_once "upload_foto.php";
+            hapus_gambar($conn, $foto_lama);
+        }
+        echo "<script>alert('Profile updated successfully!'); document.location='admin.php?page=profil';</script>";
     } else {
-        echo "<script>alert('Failed to update profile: " . $stmt->errorInfo()[2] . "');</script>";
+        echo "<script>alert(" . json_encode('Failed to update profile: ' . $stmt->errorInfo()[2]) . ");</script>";
     }
 }
 ?>

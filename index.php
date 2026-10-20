@@ -39,6 +39,7 @@ $jadwal = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Daily Journal of Jia</title>
+    <meta name="description" content="Jia's Daily Journal: travel stories, photo gallery, and class schedule." />
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
