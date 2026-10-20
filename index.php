@@ -135,7 +135,9 @@ $jadwal = [
                 <?php foreach ($articles as $row) { ?>
                     <div class="col">
                         <article class="article-card">
-                            <img src="img/<?= htmlspecialchars($row["gambar"]) ?>" alt="<?= htmlspecialchars($row["judul"]) ?>" loading="lazy" />
+                            <div class="thumb">
+                                <img src="img/<?= htmlspecialchars($row["gambar"]) ?>" alt="<?= htmlspecialchars($row["judul"]) ?>" loading="lazy" />
+                            </div>
                             <div class="body">
                                 <h3 class="mb-2"><?= htmlspecialchars($row["judul"]) ?></h3>
                                 <p><?= htmlspecialchars($row["isi"]) ?></p>
@@ -279,6 +281,7 @@ $jadwal = [
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"
     ></script>
+    <script src="motion.js"></script>
     <script>
         // tanggal dan jam di hero
         function tampilWaktu() {

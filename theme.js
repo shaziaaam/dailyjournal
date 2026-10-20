@@ -1,5 +1,8 @@
 // Dimuat di <head> supaya tema terpasang sebelum halaman tampil (tanpa kedip).
 (function () {
+    // penanda JS aktif: animasi reveal hanya menyembunyikan konten jika JS jalan
+    document.documentElement.classList.add("js");
+
     var tema = null;
     try {
         tema = localStorage.getItem("tema");
