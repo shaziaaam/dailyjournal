@@ -36,7 +36,7 @@ if (!$user) {
             <label for="foto" class="form-label" style="font-size: 18px;">Foto Profil Saat Ini</label><br>
             <img src="img/<?php echo htmlspecialchars($user['foto']); ?>" width="100px">
         </div>
-        <button type="submit" name="simpan" class="btn btn-primary">simpan</button>
+        <button type="submit" name="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
     </form>
 </div>
 

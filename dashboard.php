@@ -28,7 +28,7 @@ $jumlah_gallery = count($hasil2->fetchAll());
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div class="p-3">
-                        <h5 class="card-title"><i class="bi bi-newspaper"></i> Article</h5> 
+                        <h5 class="card-title"><i class="bi bi-journal-text"></i> Article</h5> 
                     </div>
                     <div class="p-3">
                         <span class="badge rounded-pill text-bg-danger fs-2"><?php echo $jumlah_article; ?></span>
@@ -44,7 +44,7 @@ $jumlah_gallery = count($hasil2->fetchAll());
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div class="p-3">
-                        <h5 class="card-title"><i class="bi bi-camera"></i> Gallery</h5> 
+                        <h5 class="card-title"><i class="bi bi-images"></i> Gallery</h5> 
                     </div>
                     <div class="p-3">
                         <span class="badge rounded-pill text-bg-danger fs-2"><?php echo $jumlah_gallery; ?></span>

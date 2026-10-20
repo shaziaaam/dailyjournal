@@ -859,3 +859,102 @@ html {
         width: 56px;
     }
 }
+
+/* ======================= ICON BUTTONS ======================= */
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--tint);
+    color: var(--accent-strong);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.btn-icon + .btn-icon {
+    margin-left: 0.4rem;
+}
+
+.btn-icon:hover {
+    transform: translateY(-2px);
+}
+
+.btn-icon-edit:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+}
+
+/* hapus dibuat netral dulu, baru merah saat di-hover agar beda dari aksen pink */
+.btn-icon-delete {
+    color: var(--muted);
+}
+
+.btn-icon-delete:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+}
+
+.btn-delete {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.6rem 1.5rem;
+}
+
+.btn-delete:hover {
+    background: #bb2d3b;
+    border-color: #bb2d3b;
+    color: #ffffff;
+}
+
+/* tombol bawaan Bootstrap yang masih biru diarahkan ke aksen */
+.btn-primary {
+    --bs-btn-bg: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-color: var(--on-accent);
+    --bs-btn-hover-bg: var(--accent-strong);
+    --bs-btn-hover-border-color: var(--accent-strong);
+    --bs-btn-hover-color: var(--on-accent);
+    --bs-btn-active-bg: var(--accent-strong);
+    --bs-btn-active-border-color: var(--accent-strong);
+    --bs-btn-active-color: var(--on-accent);
+}
+
+/* pagination */
+.pagination {
+    --bs-pagination-color: var(--accent-strong);
+    --bs-pagination-bg: var(--surface);
+    --bs-pagination-border-color: var(--line);
+    --bs-pagination-hover-color: var(--accent-strong);
+    --bs-pagination-hover-bg: var(--tint-2);
+    --bs-pagination-hover-border-color: var(--line);
+    --bs-pagination-focus-color: var(--accent-strong);
+    --bs-pagination-focus-bg: var(--tint-2);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.2);
+    --bs-pagination-active-color: var(--on-accent);
+    --bs-pagination-active-bg: var(--accent);
+    --bs-pagination-active-border-color: var(--accent);
+    --bs-pagination-disabled-color: var(--muted);
+    --bs-pagination-disabled-bg: var(--surface);
+    --bs-pagination-disabled-border-color: var(--line);
+    --bs-pagination-border-radius: 10px;
+}
+
+.pagination .page-item {
+    margin-inline: 2px;
+}
+
+.pagination .page-link {
+    border-radius: 10px;
+    min-width: 38px;
+    text-align: center;
+}

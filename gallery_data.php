@@ -45,8 +45,8 @@
                 </td>
                 <td>
                     <div class="text-center">
-                        <a href="#" title="edit" class="badge rounded-pill text-bg-success" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil"></i></a>
-                        <a href="#" title="delete" class="badge rounded-pill text-bg-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-x-circle"></i></a>
+                        <a href="#" title="Edit" aria-label="Edit" class="btn-icon btn-icon-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil-square"></i></a>
+                        <a href="#" title="Hapus" aria-label="Hapus" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-trash3"></i></a>
                     </div>
 
                     <!-- Awal Modal Edit -->
@@ -78,8 +78,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
+                                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
                                     </div>
                                 </form>
                             </div>
@@ -104,8 +104,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
-                                        <input type="submit" value="hapus" name="hapus" class="btn btn-primary">
+                                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" name="hapus" value="hapus" class="btn btn-delete"><i class="bi bi-trash3"></i> Hapus</button>
                                     </div>
                                 </form>
                             </div>
@@ -160,12 +160,12 @@ $total_records = count($hasil1->fetchAll());
         $end_number = ($hlm < ($jumlah_page - $jumlah_number))? $hlm + $jumlah_number : $jumlah_page;
 
         if($hlm == 1){
-            echo '<li class="page-item disabled"><a class="page-link" href="#">First</a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Pertama"><i class="bi bi-chevron-double-left"></i></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></a></li>';
         } else {
             $link_prev = ($hlm > 1)? $hlm - 1 : 1;
-            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#">First</a></li>';
-            echo '<li class="page-item halaman" id="'.$link_prev.'"><a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>';
+            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#" aria-label="Pertama"><i class="bi bi-chevron-double-left"></i></a></li>';
+            echo '<li class="page-item halaman" id="'.$link_prev.'"><a class="page-link" href="#" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></a></li>';
         }
 
         for($i = $start_number; $i <= $end_number; $i++){
@@ -174,12 +174,12 @@ $total_records = count($hasil1->fetchAll());
         }
 
         if($hlm == $jumlah_page){
-            echo '<li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#">Last</a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Terakhir"><i class="bi bi-chevron-double-right"></i></a></li>';
         } else {
         $link_next = ($hlm < $jumlah_page)? $hlm + 1 : $jumlah_page;
-            echo '<li class="page-item halaman" id="'.$link_next.'"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>';
-            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#">Last</a></li>';
+            echo '<li class="page-item halaman" id="'.$link_next.'"><a class="page-link" href="#" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></a></li>';
+            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#" aria-label="Terakhir"><i class="bi bi-chevron-double-right"></i></a></li>';
         }
     ?>
     </ul>

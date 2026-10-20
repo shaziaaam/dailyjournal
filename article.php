@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
 ?>
 <div class="container">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
+    <button type="button" class="btn btn-accent mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
         <i class="bi bi-plus-lg"></i> Tambah Article
     </button>
     <div class="row">
@@ -39,8 +39,8 @@ if (!isset($_SESSION['username'])) {
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
+                            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
                         </div>
                     </form>
                 </div>
