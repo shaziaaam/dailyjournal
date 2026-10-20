@@ -935,3 +935,43 @@ td.aksi {
     flex-shrink: 0;
     vertical-align: middle;
 }
+
+/* ---------- animasi sambutan saat tiba di section lewat klik menu ---------- */
+@keyframes arriveTitle {
+    0% { opacity: 0.35; transform: translateY(-14px) scale(0.97); letter-spacing: 0.06em; }
+    60% { opacity: 1; transform: translateY(3px) scale(1.01); }
+    100% { opacity: 1; transform: none; letter-spacing: normal; }
+}
+
+@keyframes arriveBar {
+    0% { width: 0; }
+    100% { width: 56px; }
+}
+
+@keyframes arriveCard {
+    0% { transform: translateY(14px) scale(0.985); }
+    100% { transform: none; }
+}
+
+.arrive .section-title h2 {
+    animation: arriveTitle 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.arrive .section-title::after {
+    animation: arriveBar 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+}
+
+.arrive .article-card,
+.arrive .day-card,
+.arrive .gallery-wrap,
+.arrive .about-card {
+    animation: arriveCard 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.arrive .col:nth-child(2) .article-card,
+.arrive .col:nth-child(2) .day-card { animation-delay: 0.07s; }
+
+.arrive .col:nth-child(3) .article-card,
+.arrive .col:nth-child(3) .day-card { animation-delay: 0.14s; }
+
+.arrive .col:nth-child(n+4) .day-card { animation-delay: 0.2s; }
