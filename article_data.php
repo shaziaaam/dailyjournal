@@ -141,11 +141,9 @@ $total_records = count($hasil1->fetchAll());
         $end_number = ($hlm < ($jumlah_page - $jumlah_number))? $hlm + $jumlah_number : $jumlah_page;
 
         if($hlm == 1){
-            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="First"><i class="bi bi-chevron-double-left"></i></a></li>';
             echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><i class="bi bi-chevron-left"></i></a></li>';
         } else {
             $link_prev = ($hlm > 1)? $hlm - 1 : 1;
-            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#" aria-label="First"><i class="bi bi-chevron-double-left"></i></a></li>';
             echo '<li class="page-item halaman" id="'.$link_prev.'"><a class="page-link" href="#" aria-label="Previous"><i class="bi bi-chevron-left"></i></a></li>';
         }
 
@@ -156,11 +154,9 @@ $total_records = count($hasil1->fetchAll());
 
         if($hlm == $jumlah_page){
             echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><i class="bi bi-chevron-right"></i></a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Last"><i class="bi bi-chevron-double-right"></i></a></li>';
         } else {
         $link_next = ($hlm < $jumlah_page)? $hlm + 1 : $jumlah_page;
             echo '<li class="page-item halaman" id="'.$link_next.'"><a class="page-link" href="#" aria-label="Next"><i class="bi bi-chevron-right"></i></a></li>';
-            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#" aria-label="Last"><i class="bi bi-chevron-double-right"></i></a></li>';
         }
     ?>
     </ul>
