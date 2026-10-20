@@ -53,7 +53,7 @@
                 <a class="nav-link" href="#aboutme">About Me</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="login.php" target="_blank">Login</a>
+                <a class="nav-link" href="admin.php">Admin</a>
                 </li>
                 <button
                 type="button"

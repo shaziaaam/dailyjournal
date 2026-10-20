@@ -3,11 +3,8 @@ session_start();
 
 include "koneksi.php";  
 
-// Check jika belum ada user yang login, arahkan ke halaman login
-if (!isset($_SESSION['username'])) { 
-    header("location:login.php"); 
-    exit;
-} 
+// Tanpa login: semua pengunjung memakai akun admin
+$_SESSION['username'] = "admin";
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +79,6 @@ if (!isset($_SESSION['username'])) {
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="admin.php?page=profil">Profile <?= $_SESSION['username'] ?></a></li>
-                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
