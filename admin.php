@@ -136,9 +136,9 @@ if (!isset($_SESSION['username'])) {
     <footer class="text-center p-3 site-footer">
         <div class="social">
             <a href="https://www.instagram.com/shaziaaam" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.youtube.com/@ziaaaasss" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
-            <a href="https://www.tiktok.com/@shajiaaas" target="_blank" rel="noopener"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.linkedin.com/in/shaziaaam/" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i></a>
             <a href="https://wa.me/628812406778" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i></a>
+            <a href="mailto:shaziaaaam@gmail.com"><i class="bi bi-envelope-fill"></i></a>
         </div>
         <br/>
         <div>
