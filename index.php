@@ -264,9 +264,9 @@ $jadwal = [
     <footer id="footer" class="site-footer text-center py-5">
         <div class="social mb-3">
             <a href="https://www.instagram.com/shaziaaam" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.youtube.com/@ziaaaasss" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-            <a href="https://www.tiktok.com/@shajiaaas" target="_blank" rel="noopener" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.linkedin.com/in/shaziaaam/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
             <a href="https://wa.me/628812406778" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="mailto:shaziaaaam@gmail.com" aria-label="Email"><i class="bi bi-envelope-fill"></i></a>
         </div>
         <div>
             Copyright &copy; 2024 - <span>Shazia Mirza.</span> All Right Reserved.
