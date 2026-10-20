@@ -14,7 +14,7 @@ $stmt->execute([$username]);
 $user = $stmt->fetch();
 
 if (!$user) {
-    echo "<script>alert('User tidak ditemukan!'); document.location='logout.php';</script>";
+    echo "<script>alert('User not found!'); document.location='logout.php';</script>";
     exit;
 }
 ?>
@@ -25,18 +25,18 @@ if (!$user) {
         <input type="hidden" name="foto_lama" value="<?php echo $user['foto']; ?>">
 
         <div class="mb-3">
-            <label for="password" class="form-label" style="font-size: 18px;">Ganti Password</label>
-            <input type="password" class="form-control" name="password" placeholder="Tuliskan Password Baru Jika Ingin Mengganti Password Saja">
+            <label for="password" class="form-label" style="font-size: 18px;">Change Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Enter a new password only if you want to change it">
         </div>
         <div class="mb-3">
-            <label for="foto" class="form-label" style="font-size: 18px;">Ganti Foto Profil</label>
+            <label for="foto" class="form-label" style="font-size: 18px;">Change Profile Photo</label>
             <input type="file" class="form-control" name="foto">
         </div>
         <div class="mb-3">
-            <label for="foto" class="form-label" style="font-size: 18px;">Foto Profil Saat Ini</label><br>
+            <label for="foto" class="form-label" style="font-size: 18px;">Current Profile Photo</label><br>
             <img src="img/<?php echo htmlspecialchars($user['foto']); ?>" width="100px">
         </div>
-        <button type="submit" name="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
+        <button type="submit" name="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
     </form>
 </div>
 
@@ -64,11 +64,11 @@ if (isset($_POST['simpan'])) {
                     unlink("img/$foto_lama");
                 }
             } else {
-                echo "<script>alert('Error saat mengunggah foto.');</script>";
+                echo "<script>alert('Error uploading the photo.');</script>";
                 exit;
             }
         } else {
-            echo "<script>alert('Format file tidak diizinkan.');</script>";
+            echo "<script>alert('File format not allowed.');</script>";
             exit;
         }
     }
@@ -84,9 +84,9 @@ if (isset($_POST['simpan'])) {
     }
 
     if ($stmt->execute($params)) {
-        echo "<script>alert('Data berhasil diperbarui!'); document.location='profil.php';</script>";
+        echo "<script>alert('Profile updated successfully!'); document.location='profil.php';</script>";
     } else {
-        echo "<script>alert('Data gagal diperbarui: " . $stmt->errorInfo()[2] . "');</script>";
+        echo "<script>alert('Failed to update profile: " . $stmt->errorInfo()[2] . "');</script>";
     }
 }
 ?>

@@ -18,7 +18,7 @@ function upload_foto($File){
 
 	// Check file size
 	if ($FileSize > 2000000) {
-		$message .= "Sorry, your file is too large, max 500KB. ";
+		$message .= "Sorry, your file is too large, max 2MB. ";
 		$uploadOk = 0;
 	}
 

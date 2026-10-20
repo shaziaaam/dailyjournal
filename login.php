@@ -42,11 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     //jika tidak ada (gagal), tampilkan pesan di halaman login
-    $error = "Username atau password salah.";
+    $error = "Incorrect username or password.";
 }
 ?>
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="theme.js"></script>
 </head>
 <body class="login-page">
-    <button type="button" class="theme-toggle login-theme" id="theme-toggle" title="Ganti tema" aria-label="Ganti tema">
+    <button type="button" class="theme-toggle login-theme" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
         <i class="bi bi-moon-stars-fill icon-moon"></i>
         <i class="bi bi-brightness-high-fill icon-sun"></i>
     </button>
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="text-center mb-4">
                 <img src="img/favicon.png" alt="" class="login-logo" />
                 <h1 class="login-brand">Jia's Daily Journal</h1>
-                <p class="text-secondary mb-0">Masuk untuk mengelola article dan gallery</p>
+                <p class="text-secondary mb-0">Sign in to manage your articles and gallery</p>
             </div>
 
             <?php if ($error) { ?>
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
                         <input type="password" id="pass" name="pass" class="form-control" placeholder="Password"
                             autocomplete="current-password" required />
-                        <button type="button" class="btn btn-outline-secondary" id="lihat-pass" aria-label="Tampilkan password">
+                        <button type="button" class="btn btn-outline-secondary" id="lihat-pass" aria-label="Show password">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
 
             <div class="text-center mt-4">
-                <a href="index.php" class="back-link"><i class="bi bi-arrow-left"></i> Kembali ke beranda</a>
+                <a href="index.php" class="back-link"><i class="bi bi-arrow-left"></i> Back to home</a>
             </div>
         </div>
     </main>
@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var tampil = pass.type === "password";
             pass.type = tampil ? "text" : "password";
             lihat.innerHTML = tampil ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
-            lihat.setAttribute("aria-label", tampil ? "Sembunyikan password" : "Tampilkan password");
+            lihat.setAttribute("aria-label", tampil ? "Hide password" : "Show password");
         });
     </script>
 </body>

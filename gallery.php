@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 <div class="container">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-accent mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
-        <i class="bi bi-plus-lg"></i> Tambah Gallery
+        <i class="bi bi-plus-lg"></i> Add Gallery
     </button>
     <div class="row">
         <div class="table-responsive" id="gallery_data">  
@@ -19,19 +19,19 @@ if (!isset($_SESSION['username'])) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Gallery</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Gallery</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" action="" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="formGroupExampleInput2" class="form-label">Pilih Gambar yang Akan Diupload</label>
+                                <label for="formGroupExampleInput2" class="form-label">Choose an image to upload</label>
                                 <input type="file" class="form-control" name="gambar">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
+                            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
                         </div>
                     </form>
                 </div>
@@ -104,12 +104,12 @@ if (isset($_POST['simpan'])) {
 
     if ($stmt->execute($params)) {
         echo "<script>
-            alert('Simpan data sukses');
+            alert('Saved successfully');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Simpan data gagal: " . $stmt->errorInfo()[2] . "');
+            alert('Failed to save: " . $stmt->errorInfo()[2] . "');
             document.location='admin.php?page=gallery';
         </script>";
     }
@@ -128,12 +128,12 @@ if (isset($_POST['hapus'])) {
     $stmt = $conn->prepare("DELETE FROM gallery WHERE id = ?");
     if ($stmt->execute([$id])) {
         echo "<script>
-            alert('Hapus data sukses');
+            alert('Deleted successfully');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Hapus data gagal: " . $stmt->errorInfo()[2] . "');
+            alert('Failed to delete: " . $stmt->errorInfo()[2] . "');
             document.location='admin.php?page=gallery';
         </script>";
     }

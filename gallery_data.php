@@ -2,9 +2,9 @@
     <thead class="table-dark">
         <tr>
             <th class="text-center">No</th>
-            <th class="w-45 text-center">Tanggal</th>
-            <th class="w-80 text-center">Gambar</th>
-            <th class="w-35 text-center">Aksi</th>
+            <th class="w-45 text-center">Date</th>
+            <th class="w-80 text-center">Image</th>
+            <th class="w-35 text-center">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -24,8 +24,8 @@
             <tr>
                 <td class="text-center"><?= $no++ ?></td>
                 <td>
-                    pada : <?= $row["tanggal"] ?>
-                    <br>oleh : <?= $row["username"] ?>
+                    on: <?= $row["tanggal"] ?>
+                    <br>by: <?= $row["username"] ?>
                 </td>
                 <td>
                     <?php
@@ -46,7 +46,7 @@
                 <td>
                     <div class="text-center aksi">
                         <a href="#" title="Edit" aria-label="Edit" class="btn-icon btn-icon-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil-square"></i></a>
-                        <a href="#" title="Hapus" aria-label="Hapus" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-trash3"></i></a>
+                        <a href="#" title="Delete" aria-label="Delete" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-trash3"></i></a>
                     </div>
 
                     <!-- Awal Modal Edit -->
@@ -60,11 +60,11 @@
                                 <form method="post" action="" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="formGroupExampleInput2" class="form-label">Ganti Gambar</label>
+                                            <label for="formGroupExampleInput2" class="form-label">Change Image</label>
                                             <input type="file" class="form-control" name="gambar">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="formGroupExampleInput3" class="form-label">Gambar Lama</label>
+                                            <label for="formGroupExampleInput3" class="form-label">Current Image</label>
                                             <?php
                                             if ($row["gambar"] != '') {
                                                 if (file_exists('img/' . $row["gambar"] . '')) {
@@ -78,8 +78,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-                                        <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
+                                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
                                     </div>
                                 </form>
                             </div>
@@ -92,20 +92,20 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi Hapus Gallery</h1>
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete Gallery</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <form method="post" action="" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="formGroupExampleInput" class="form-label">Yakin akan menghapus gallery "<strong><?= $row["tanggal"] ?></strong>"?</label>
+                                            <label for="formGroupExampleInput" class="form-label">Are you sure you want to delete the gallery item "<strong><?= $row["tanggal"] ?></strong>"?</label>
                                             <input type="hidden" name="id" value="<?= $row["id"] ?>">
                                             <input type="hidden" name="gambar" value="<?= $row["gambar"] ?>">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-                                        <button type="submit" name="hapus" value="hapus" class="btn btn-delete"><i class="bi bi-trash3"></i> Hapus</button>
+                                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" name="hapus" value="hapus" class="btn btn-delete"><i class="bi bi-trash3"></i> Delete</button>
                                     </div>
                                 </form>
                             </div>
@@ -125,11 +125,11 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h7 class="modal-title" id="modalDetailLabel">Detail Data</h7>
+                <h7 class="modal-title" id="modalDetailLabel">Details</h7>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <img id="popup-gambar" src="" alt="Detail Data" class="img-fluid">
+                <img id="popup-gambar" src="" alt="Details" class="img-fluid">
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@ $sql1 = "SELECT * FROM gallery";
 $hasil1 = $conn->query($sql1); 
 $total_records = count($hasil1->fetchAll());
 ?>
-<p>Total gallery : <?php echo $total_records; ?></p>
+<p>Total gallery items: <?php echo $total_records; ?></p>
 <nav class="mb-2">
     <ul class="pagination justify-content-end">
     <?php
@@ -160,12 +160,12 @@ $total_records = count($hasil1->fetchAll());
         $end_number = ($hlm < ($jumlah_page - $jumlah_number))? $hlm + $jumlah_number : $jumlah_page;
 
         if($hlm == 1){
-            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Pertama"><i class="bi bi-chevron-double-left"></i></a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="First"><i class="bi bi-chevron-double-left"></i></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><i class="bi bi-chevron-left"></i></a></li>';
         } else {
             $link_prev = ($hlm > 1)? $hlm - 1 : 1;
-            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#" aria-label="Pertama"><i class="bi bi-chevron-double-left"></i></a></li>';
-            echo '<li class="page-item halaman" id="'.$link_prev.'"><a class="page-link" href="#" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></a></li>';
+            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#" aria-label="First"><i class="bi bi-chevron-double-left"></i></a></li>';
+            echo '<li class="page-item halaman" id="'.$link_prev.'"><a class="page-link" href="#" aria-label="Previous"><i class="bi bi-chevron-left"></i></a></li>';
         }
 
         for($i = $start_number; $i <= $end_number; $i++){
@@ -174,12 +174,12 @@ $total_records = count($hasil1->fetchAll());
         }
 
         if($hlm == $jumlah_page){
-            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Terakhir"><i class="bi bi-chevron-double-right"></i></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><i class="bi bi-chevron-right"></i></a></li>';
+            echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Last"><i class="bi bi-chevron-double-right"></i></a></li>';
         } else {
         $link_next = ($hlm < $jumlah_page)? $hlm + 1 : $jumlah_page;
-            echo '<li class="page-item halaman" id="'.$link_next.'"><a class="page-link" href="#" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></a></li>';
-            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#" aria-label="Terakhir"><i class="bi bi-chevron-double-right"></i></a></li>';
+            echo '<li class="page-item halaman" id="'.$link_next.'"><a class="page-link" href="#" aria-label="Next"><i class="bi bi-chevron-right"></i></a></li>';
+            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#" aria-label="Last"><i class="bi bi-chevron-double-right"></i></a></li>';
         }
     ?>
     </ul>

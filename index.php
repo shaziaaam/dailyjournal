@@ -1,42 +1,40 @@
 <?php
 include "koneksi.php";
 
-// tampilkan tanggal dalam format Indonesia, misal 12 Jan 2025
+// tampilkan tanggal dalam format Inggris, misal Jan 12, 2025
 function tgl($waktu) {
-    $bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    $t = strtotime($waktu);
-    return date('j', $t) . ' ' . $bulan[date('n', $t) - 1] . ' ' . date('Y', $t);
+    return date('M j, Y', strtotime($waktu));
 }
 
 $articles = $conn->query("SELECT * FROM article ORDER BY tanggal DESC")->fetchAll();
 $galleries = $conn->query("SELECT * FROM gallery ORDER BY tanggal DESC")->fetchAll();
 
 $jadwal = [
-    'senin' => ['SENIN', [
-        ['Etika Profesi', '16.20-18.00 | H.4.4'],
-        ['Sistem Operasi', '18.30-21.00 | H.4.8'],
+    'senin' => ['MONDAY', [
+        ['Professional Ethics', '16.20-18.00 | H.4.4'],
+        ['Operating Systems', '18.30-21.00 | H.4.8'],
     ]],
-    'selasa' => ['SELASA', [
-        ['Pendidikan Kewarganegaraan', '12.30-13.10 | Kulino'],
-        ['Probabilitas dan Statistik', '15.30-18.00 | H.4.9'],
-        ['Kecerdasan Buatan', '18.30-21.00 | H.4.11'],
+    'selasa' => ['TUESDAY', [
+        ['Civic Education', '12.30-13.10 | Kulino'],
+        ['Probability and Statistics', '15.30-18.00 | H.4.9'],
+        ['Artificial Intelligence', '18.30-21.00 | H.4.11'],
     ]],
-    'rabu' => ['RABU', [
-        ['Manajemen Proyek Teknologi Informasi', '15.30-18.00 | H.4.6'],
+    'rabu' => ['WEDNESDAY', [
+        ['IT Project Management', '15.30-18.00 | H.4.6'],
     ]],
-    'kamis' => ['KAMIS', [
-        ['Bahasa Indonesia', '12.30-14.10 | Kulino'],
-        ['Pendidikan Agama Islam', '16.20-18.00 | Kulino'],
-        ['Penambangan Data', '18.30-21.00 | H.4.9'],
+    'kamis' => ['THURSDAY', [
+        ['Indonesian Language', '12.30-14.10 | Kulino'],
+        ['Islamic Religious Education', '16.20-18.00 | Kulino'],
+        ['Data Mining', '18.30-21.00 | H.4.9'],
     ]],
-    'jumat' => ['JUMAT', [
-        ['Pemrograman Web Lanjut', '10.20-12.00 | D.2.K'],
+    'jumat' => ['FRIDAY', [
+        ['Advanced Web Programming', '10.20-12.00 | D.2.K'],
     ]],
-    'sabtu' => ['SABTU', []],
+    'sabtu' => ['SATURDAY', []],
 ];
 ?>
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -86,7 +84,7 @@ $jadwal = [
                     <li class="nav-item"><a class="nav-link" href="#aboutme">About Me</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.php">Admin</a></li>
                     <li class="nav-item ms-md-2 mt-2 mt-md-0">
-                        <button type="button" class="theme-toggle" id="theme-toggle" title="Ganti tema" aria-label="Ganti tema">
+                        <button type="button" class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
                             <i class="bi bi-moon-stars-fill icon-moon"></i>
                             <i class="bi bi-brightness-high-fill icon-sun"></i>
                         </button>
@@ -112,8 +110,8 @@ $jadwal = [
                     </p>
                     <p class="clock mb-4"><i class="bi bi-clock"></i> <span id="tanggal"></span> &middot; <span id="jam"></span></p>
                     <div class="d-flex gap-2 justify-content-center justify-content-md-start flex-wrap">
-                        <a href="#article" class="btn btn-accent">Baca Article</a>
-                        <a href="#gallery" class="btn btn-ghost">Lihat Gallery</a>
+                        <a href="#article" class="btn btn-accent">Read Articles</a>
+                        <a href="#gallery" class="btn btn-ghost">View Gallery</a>
                     </div>
                 </div>
             </div>
@@ -126,11 +124,11 @@ $jadwal = [
         <div class="container">
             <div class="section-title">
                 <h2>Article</h2>
-                <p>Cerita dan catatan perjalanan terbaru</p>
+                <p>Stories and travel notes, fresh off the road</p>
             </div>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 <?php if (!$articles) { ?>
-                    <p class="text-center text-secondary">Belum ada article.</p>
+                    <p class="text-center text-secondary">No articles yet.</p>
                 <?php } ?>
                 <?php foreach ($articles as $row) { ?>
                     <div class="col">
@@ -150,7 +148,7 @@ $jadwal = [
                                     data-isi="<?= htmlspecialchars($row["isi"]) ?>"
                                     data-tanggal="<?= tgl($row["tanggal"]) ?>"
                                     data-gambar="img/<?= htmlspecialchars($row["gambar"]) ?>">
-                                    Baca selengkapnya <i class="bi bi-arrow-right"></i>
+                                    Read more <i class="bi bi-arrow-right"></i>
                                 </button>
                             </div>
                         </article>
@@ -170,7 +168,7 @@ $jadwal = [
                         <h3 class="modal-title fs-3" id="artikelJudul"></h3>
                         <small class="text-secondary" id="artikelTanggal"></small>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-2" id="artikelIsi"></div>
             </div>
@@ -183,22 +181,22 @@ $jadwal = [
         <div class="container">
             <div class="section-title">
                 <h2>Gallery</h2>
-                <p>Potret momen yang ingin selalu diingat</p>
+                <p>Moments worth remembering</p>
             </div>
             <?php if (!$galleries) { ?>
-                <p class="text-center text-secondary">Belum ada foto.</p>
+                <p class="text-center text-secondary">No photos yet.</p>
             <?php } else { ?>
             <div id="carouselExample" class="carousel slide carousel-fade gallery-wrap" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <?php foreach ($galleries as $i => $row) { ?>
                         <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="<?= $i ?>"
-                            class="<?= $i === 0 ? 'active' : '' ?>" aria-label="Foto <?= $i + 1 ?>"></button>
+                            class="<?= $i === 0 ? 'active' : '' ?>" aria-label="Photo <?= $i + 1 ?>"></button>
                     <?php } ?>
                 </div>
                 <div class="carousel-inner">
                     <?php foreach ($galleries as $i => $row) { ?>
                         <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
-                            <img src="img/<?= htmlspecialchars($row["gambar"]) ?>" class="d-block w-100" alt="Foto gallery <?= $i + 1 ?>" />
+                            <img src="img/<?= htmlspecialchars($row["gambar"]) ?>" class="d-block w-100" alt="Gallery photo <?= $i + 1 ?>" />
                         </div>
                     <?php } ?>
                 </div>
@@ -221,7 +219,7 @@ $jadwal = [
         <div class="container">
             <div class="section-title">
                 <h2>Schedule</h2>
-                <p>Jadwal kuliah mingguan</p>
+                <p>Weekly class schedule</p>
             </div>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
                 <?php foreach ($jadwal as $kunci => [$hari, $matkul]) { ?>
@@ -249,7 +247,7 @@ $jadwal = [
         <div class="container">
             <div class="about-card mx-auto" style="max-width: 760px;">
                 <div class="d-sm-flex align-items-center justify-content-center gap-4 text-center text-sm-start">
-                    <img id="profile-image" src="img/shazia.jpg" alt="Profile Photo" class="rounded-circle mb-3 mb-sm-0 flex-shrink-0" title="Klik untuk menyembunyikan keterangan" />
+                    <img id="profile-image" src="img/shazia.jpg" alt="Profile Photo" class="rounded-circle mb-3 mb-sm-0 flex-shrink-0" title="Click to show or hide details" />
                     <div id="keterangan-diri">
                         <div class="nim">A11.2023.15176</div>
                         <h2 class="fw-bold mb-1">Shazia Mirza</h2>
@@ -286,10 +284,10 @@ $jadwal = [
         // tanggal dan jam di hero
         function tampilWaktu() {
             var waktu = new Date();
-            document.getElementById("tanggal").textContent = waktu.toLocaleDateString("id-ID", {
+            document.getElementById("tanggal").textContent = waktu.toLocaleDateString("en-US", {
                 weekday: "long", day: "numeric", month: "long", year: "numeric"
             });
-            document.getElementById("jam").textContent = waktu.toLocaleTimeString("id-ID");
+            document.getElementById("jam").textContent = waktu.toLocaleTimeString("en-US");
         }
         tampilWaktu();
         setInterval(tampilWaktu, 1000);

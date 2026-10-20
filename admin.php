@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -77,7 +77,7 @@ if (!isset($_SESSION['username'])) {
                         </ul>
                     </li>
                     <li class="nav-item ms-md-2 mt-2 mt-md-0">
-                        <button type="button" class="theme-toggle" id="theme-toggle" title="Ganti tema" aria-label="Ganti tema">
+                        <button type="button" class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
                             <i class="bi bi-moon-stars-fill icon-moon"></i>
                             <i class="bi bi-brightness-high-fill icon-sun"></i>
                         </button>
@@ -94,13 +94,13 @@ if (!isset($_SESSION['username'])) {
             <?php
             if (isset($_GET['page'])) {
             ?>
-                <h4 class="admin-title display-6"><?= ucfirst($_GET['page']) ?></h4>
+                <h4 class="admin-title display-6"><?= $_GET['page'] === 'profil' ? 'Profile' : htmlspecialchars(ucfirst($_GET['page'])) ?></h4>
                 <?php
                 $page = basename($_GET['page']); // Hindari LFI
                 if (file_exists($page . ".php")) {
                     include($page . ".php");
                 } else {
-                    echo "<p>Halaman tidak ditemukan.</p>";
+                    echo "<p>Page not found.</p>";
                 }
             } else {
             ?>

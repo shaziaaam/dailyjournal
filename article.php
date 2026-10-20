@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 <div class="container">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-accent mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
-        <i class="bi bi-plus-lg"></i> Tambah Article
+        <i class="bi bi-plus-lg"></i> Add Article
     </button>
     <div class="row">
         <div class="table-responsive" id="article_data">
@@ -20,27 +20,27 @@ if (!isset($_SESSION['username'])) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Article</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Article</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" action="" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="formGroupExampleInput" class="form-label">Judul</label>
-                                <input type="text" class="form-control" name="judul" placeholder="Tuliskan Judul Artikel" required>
+                                <label for="formGroupExampleInput" class="form-label">Title</label>
+                                <input type="text" class="form-control" name="judul" placeholder="Enter the article title" required>
                             </div>
                             <div class="mb-3">
-                                <label for="floatingTextarea2">Isi</label>
-                                <textarea class="form-control" placeholder="Tuliskan Isi Artikel" name="isi" required></textarea>
+                                <label for="floatingTextarea2">Content</label>
+                                <textarea class="form-control" placeholder="Write the article content" name="isi" required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="formGroupExampleInput2" class="form-label">Gambar</label>
+                                <label for="formGroupExampleInput2" class="form-label">Image</label>
                                 <input type="file" class="form-control" name="gambar">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Simpan</button>
+                            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
                         </div>
                     </form>
                 </div>
@@ -137,12 +137,12 @@ if (isset($_POST['simpan'])) {
 
     if ($simpan) {
         echo "<script>
-            alert('Simpan data sukses');
+            alert('Saved successfully');
             document.location='admin.php?page=article';
         </script>";
     } else {
         echo "<script>
-            alert('Simpan data gagal');
+            alert('Failed to save');
             document.location='admin.php?page=article';
         </script>";
     }
@@ -165,12 +165,12 @@ if (isset($_POST['hapus'])) {
 
     if ($hapus) {
         echo "<script>
-            alert('Hapus data sukses');
+            alert('Deleted successfully');
             document.location='admin.php?page=article';
         </script>";
     } else {
         echo "<script>
-            alert('Hapus data gagal');
+            alert('Failed to delete');
             document.location='admin.php?page=article';
         </script>";
     }

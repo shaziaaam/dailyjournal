@@ -25,28 +25,28 @@ CREATE TABLE gallery (
 INSERT INTO user (username, password, foto)
 VALUES ('jialucuk', '71637b92d28d25a5774135d8740f9bc6', NULL);
 
--- data contoh: article
+-- sample data: article
 INSERT INTO article (judul, isi, gambar, tanggal, username) VALUES
-('Big Ben: Dentang yang Membuat London Tak Pernah Terlambat',
- 'Berdiri di tepi Sungai Thames sejak 1859, menara jam ini bukan sekadar penunjuk waktu, melainkan detak jantung London. Dentangnya menemani sidang parlemen, malam tahun baru, hingga jutaan langkah wisatawan yang mendongak dengan mulut menganga. Satu catatan kecil untuk kamu yang suka fakta unik: "Big Ben" sebenarnya nama lonceng raksasa di dalamnya, sementara menaranya bernama Elizabeth Tower. Foto boleh sama, tapi sekarang kamu tahu cerita sebenarnya.',
+ ('Big Ben: The Chime That Keeps London on Time',
+ 'Standing on the banks of the Thames since 1859, this clock tower is more than a timekeeper; it is the heartbeat of London. Its chimes have accompanied parliamentary sessions, New Year''s Eve countdowns, and millions of visitors craning their necks in awe. A fun fact for trivia lovers: "Big Ben" is actually the name of the great bell inside, while the tower itself is called the Elizabeth Tower. Same photo, but now you know the real story.',
  '20250108222643.jpg', '2025-01-12 18:30:00', 'admin'),
-('London Eye: 30 Menit yang Mengubah Cara Kamu Melihat Kota',
- 'Naik pelan, tanpa terburu-buru, dan tiba-tiba seluruh London terhampar di bawah kaki. London Eye memutar kapsul kacanya setinggi 135 meter dari tepi Thames, cukup tinggi untuk menangkap Big Ben, Westminster, hingga garis cakrawala kota. Tips dari jurnal ini: datang saat matahari mulai turun. Langit emas, sungai berkilau, dan kamu tidak akan ingin turun.',
+ ('London Eye: 30 Minutes That Change How You See a City',
+ 'Rise slowly, with no rush, and suddenly all of London unfolds beneath your feet. The London Eye turns its glass capsules 135 meters above the Thames, high enough to catch Big Ben, Westminster, and the skyline stretching to the horizon. A tip from this journal: go as the sun starts to set. Golden sky, glittering river, and you won''t want to come down.',
  '20250108222659.jpg', '2025-01-12 18:25:00', 'admin'),
-('221B Baker Street: Alamat Fiksi yang Terasa Paling Nyata',
- 'Pintu hitam, lampu gas, dan papan hijau bertuliskan Sherlock Holmes Museum. Di sinilah detektif paling terkenal sepanjang masa "tinggal", dan di sinilah penggemarnya datang dari seluruh dunia untuk membuktikan bahwa fiksi bisa punya alamat. Masuk ke dalam, dan kamu akan merasa Holmes baru saja keluar membawa pipanya. Elementary, my dear traveler: satu kunjungan, seribu teori.',
+ ('221B Baker Street: The Fictional Address That Feels Most Real',
+ 'A black door, gas lamps, and a green sign reading Sherlock Holmes Museum. This is where the world''s most famous detective "lives," and where fans from all over the world come to prove that fiction can have an address. Step inside and you''ll feel as though Holmes just walked out with his pipe. Elementary, my dear traveler: one visit, a thousand theories.',
  '20250108222718.jpg', '2025-01-12 18:20:00', 'admin'),
-('Westminster Abbey: Seribu Tahun Sejarah dalam Satu Pintu Gerbang',
- 'Dua menara kembarnya menjulang megah, dan di balik dindingnya tersimpan sejarah Inggris yang sesungguhnya. Sejak 1066, para raja dan ratu dinobatkan di sini, dan penyair, ilmuwan, hingga negarawan beristirahat dalam keheningannya. Datanglah saat senja, ketika lampu mulai menyala di dinding batunya dan alun-alun hampir sepi. Rasanya seperti berjalan masuk ke dalam buku sejarah.',
+ ('Westminster Abbey: A Thousand Years of History Behind One Gate',
+ 'Its twin towers rise majestically, and behind its walls lies the true story of England. Since 1066, kings and queens have been crowned here, and poets, scientists, and statesmen rest in its silence. Visit at dusk, when the lights glow on its stone walls and the square is nearly empty. It feels like walking into a history book.',
  '20250108222737.jpg', '2025-01-12 18:15:00', 'admin'),
-('Kensington Palace: Istana Bata Merah yang Menyimpan Banyak Cerita',
- 'Di balik halaman rumput hijau dan pepohonan Kensington Gardens, berdiri istana bata merah yang sudah menjadi rumah keluarga kerajaan sejak abad ke-17. Tidak sebesar Buckingham, tapi justru terasa lebih hangat, lebih manusiawi, dan lebih mudah dicintai. Bawa bekal, duduk di rumput, dan biarkan sore berjalan lambat. Inilah London versi paling tenang.',
+ ('Kensington Palace: A Red-Brick Palace Full of Stories',
+ 'Behind the green lawns and trees of Kensington Gardens stands a red-brick palace that has been a royal home since the 17th century. Not as grand as Buckingham, but warmer, more human, and easier to love. Bring a snack, sit on the grass, and let the afternoon move slowly. This is London at its calmest.',
  '20250108222808.jpg', '2025-01-12 18:10:00', 'admin'),
-('Tower Bridge: Jembatan yang Bisa "Membuka Pintu" untuk Kapal',
- 'Banyak yang mengira ini London Bridge, padahal ini Tower Bridge, jembatan biru-putih bergaya Victoria yang selesai dibangun pada 1894. Keunikannya: bagian tengahnya bisa terangkat untuk memberi jalan kapal-kapal besar di Thames. Kalau jadwalnya pas, kamu bisa melihatnya terbuka langsung. Foto terbaiknya? Dari tepi sungai, dengan langit biru dan awan tipis seperti di sini.',
+ ('Tower Bridge: The Bridge That Opens Its Doors for Ships',
+ 'Many people think this is London Bridge, but it is Tower Bridge, the blue-and-white Victorian bridge completed in 1894. Its signature trick: the middle section lifts to let large ships pass along the Thames. If your timing is right, you can watch it open in person. The best photo? From the riverbank, with a blue sky and thin clouds like this one.',
  '20250109145330.jpg', '2025-01-12 18:05:00', 'admin');
 
--- data contoh: gallery
+-- sample data: gallery
 INSERT INTO gallery (gambar, tanggal, username) VALUES
 ('20250108222643.jpg', '2025-01-12 18:30:00', 'admin'),
 ('20250108222659.jpg', '2025-01-12 18:25:00', 'admin'),
