@@ -13,7 +13,7 @@ $_SESSION['username'] = "admin";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Daily Journal | Admin</title>
-    <link rel="icon" href="https://i.pinimg.com/736x/07/a7/11/07a7118298e6d8e6ee655a7046199ee9.jpg" />
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
