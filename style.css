@@ -958,3 +958,17 @@ html {
     min-width: 38px;
     text-align: center;
 }
+
+/* kolom aksi: tombol tetap sejajar dalam satu baris */
+.aksi {
+    white-space: nowrap;
+}
+
+td.aksi {
+    width: 1%;
+}
+
+.btn-icon {
+    flex-shrink: 0;
+    vertical-align: middle;
+}

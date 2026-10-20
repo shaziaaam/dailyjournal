@@ -5,7 +5,7 @@
                         <th class="w-25">Judul</th>
                         <th class="w-75">Isi</th>
                         <th class="w-25">Gambar</th>
-                        <th class="w-25">Aksi</th>
+                        <th class="text-nowrap">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                                 }
                                 ?>
                             </td>
-                            <td>
+                            <td class="aksi">
                                 <a href="#" title="Edit" aria-label="Edit" class="btn-icon btn-icon-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil-square"></i></a>
                                 <a href="#" title="Hapus" aria-label="Hapus" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-trash3"></i></a>
 
