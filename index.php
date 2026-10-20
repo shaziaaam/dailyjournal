@@ -247,7 +247,7 @@ $jadwal = [
         <div class="container">
             <div class="about-card mx-auto" style="max-width: 760px;">
                 <div class="d-sm-flex align-items-center justify-content-center gap-4 text-center text-sm-start">
-                    <img id="profile-image" src="https://i.pinimg.com/736x/2a/61/10/2a61107c7a6f62a79a03440a3c5f78aa.jpg" alt="Profile Photo" class="rounded-circle mb-3 mb-sm-0 flex-shrink-0" title="Klik untuk menyembunyikan keterangan" />
+                    <img id="profile-image" src="img/shazia.jpg" alt="Profile Photo" class="rounded-circle mb-3 mb-sm-0 flex-shrink-0" title="Klik untuk menyembunyikan keterangan" />
                     <div id="keterangan-diri">
                         <div class="nim">A11.2023.15176</div>
                         <h2 class="fw-bold mb-1">Shazia Mirza</h2>
