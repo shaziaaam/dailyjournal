@@ -21,9 +21,9 @@ CREATE TABLE gallery (
     username TEXT
 );
 
--- login awal: admin / admin123 (password disimpan md5)
+-- akun login awal: jialucuk (password disimpan md5)
 INSERT INTO user (username, password, foto)
-VALUES ('admin', '0192023a7bbd73250516f069df18b500', NULL);
+VALUES ('jialucuk', '71637b92d28d25a5774135d8740f9bc6', NULL);
 
 -- data contoh: article
 INSERT INTO article (judul, isi, gambar, tanggal, username) VALUES

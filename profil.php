@@ -14,7 +14,7 @@ $stmt->execute([$username]);
 $user = $stmt->fetch();
 
 if (!$user) {
-    echo "<script>alert('User tidak ditemukan!'); document.location='index.php';</script>";
+    echo "<script>alert('User tidak ditemukan!'); document.location='logout.php';</script>";
     exit;
 }
 ?>

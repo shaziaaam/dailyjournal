@@ -1,4 +1,11 @@
 <?php
+// hanya bisa diakses setelah login (lewat admin.php)
+if (!isset($_SESSION['username'])) {
+    http_response_code(403);
+    exit;
+}
+?>
+<?php
 //query untuk mengambil data article
 $sql1 = "SELECT * FROM article ORDER BY tanggal DESC";
 $hasil1 = $conn->query($sql1);

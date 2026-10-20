@@ -1,3 +1,10 @@
+<?php
+// hanya bisa diakses setelah login (lewat admin.php)
+if (!isset($_SESSION['username'])) {
+    http_response_code(403);
+    exit;
+}
+?>
 <div class="container">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
