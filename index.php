@@ -62,29 +62,41 @@ $jadwal = [
 </head>
 <body>
     <!-- nav begin -->
-    <nav class="navbar navbar-expand-md site-nav sticky-top">
+    <nav class="navbar navbar-expand-lg site-nav sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#">Jia's Daily Journal</a>
-            <button
-            class="navbar-toggler border-0"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            >
-            <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="d-flex align-items-center gap-2 d-lg-none">
+                <button type="button" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+                    <i class="bi bi-moon-stars-fill icon-moon"></i>
+                    <i class="bi bi-brightness-high-fill icon-sun"></i>
+                </button>
+                <button
+                class="navbar-toggler border-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+                >
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-md-center gap-md-1">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-1">
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#article">Article</a></li>
                     <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
                     <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
                     <li class="nav-item"><a class="nav-link" href="#aboutme">About Me</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.php">Admin</a></li>
-                    <li class="nav-item ms-md-2 mt-2 mt-md-0">
+                    <li class="nav-item nav-clock d-none d-lg-block" aria-hidden="true">
+                        <div class="clock">
+                            <span class="clock-time"><span id="jam">--</span><span class="clock-colon">:</span><span id="menit">--</span> <span id="ampm"></span></span>
+                            <span class="clock-date" id="tanggal"></span>
+                        </div>
+                    </li>
+                    <li class="nav-item d-none d-lg-block ms-lg-2">
                         <button type="button" class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
                             <i class="bi bi-moon-stars-fill icon-moon"></i>
                             <i class="bi bi-brightness-high-fill icon-sun"></i>
@@ -106,10 +118,9 @@ $jadwal = [
                 <div class="col-md-7 text-center text-md-start">
                     <span class="eyebrow"><i class="bi bi-journal-bookmark-fill"></i> My Daily Journal</span>
                     <h1 class="mt-3">Choose your own path, <em>create memories,</em> make them stay.</h1>
-                    <p class="lead mt-3">
+                    <p class="lead mt-3 mb-4">
                         Just wanna share my experiences, so you can read and enjoy it with happiness too!
                     </p>
-                    <p class="clock mb-4"><i class="bi bi-clock"></i> <span id="tanggal"></span> &middot; <span id="jam"></span></p>
                     <div class="d-flex gap-2 justify-content-center justify-content-md-start flex-wrap">
                         <a href="#article" class="btn btn-accent">Read Articles</a>
                         <a href="#gallery" class="btn btn-ghost">View Gallery</a>
@@ -248,7 +259,7 @@ $jadwal = [
         <div class="container">
             <div class="about-card mx-auto" style="max-width: 760px;">
                 <div class="d-sm-flex align-items-center justify-content-center gap-4 text-center text-sm-start">
-                    <img id="profile-image" src="img/shazia.jpg" alt="Profile Photo" class="rounded-circle mb-3 mb-sm-0 flex-shrink-0" title="Click to show or hide details" />
+                    <img id="profile-image" src="img/profile.jpg" alt="Profile Photo" class="rounded-circle mb-3 mb-sm-0 flex-shrink-0" title="Click to show or hide details" />
                     <div id="keterangan-diri">
                         <div class="nim">A11.2023.15176</div>
                         <h2 class="fw-bold mb-1">Shazia Mirza</h2>
@@ -282,13 +293,16 @@ $jadwal = [
     ></script>
     <script src="motion.js"></script>
     <script>
-        // tanggal dan jam di hero
+        // tanggal dan jam di navbar
         function tampilWaktu() {
             var waktu = new Date();
+            var jam = waktu.getHours();
+            document.getElementById("jam").textContent = jam % 12 || 12;
+            document.getElementById("menit").textContent = String(waktu.getMinutes()).padStart(2, "0");
+            document.getElementById("ampm").textContent = jam < 12 ? "AM" : "PM";
             document.getElementById("tanggal").textContent = waktu.toLocaleDateString("en-US", {
-                weekday: "long", day: "numeric", month: "long", year: "numeric"
+                weekday: "short", month: "short", day: "numeric"
             });
-            document.getElementById("jam").textContent = waktu.toLocaleTimeString("en-US");
         }
         tampilWaktu();
         setInterval(tampilWaktu, 1000);

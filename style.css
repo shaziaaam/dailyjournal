@@ -108,6 +108,7 @@ html {
 
 /* ---------- navbar ---------- */
 .site-nav {
+    min-height: 72px;
     background: rgba(var(--bs-body-bg-rgb), 0.82);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -121,16 +122,65 @@ html {
 }
 
 .site-nav .nav-link {
+    position: relative;
     color: var(--bs-body-color);
     font-weight: 500;
-    border-radius: 999px;
-    padding-inline: 0.9rem !important;
+    padding-inline: 1rem !important;
+}
+
+/* garis bawah pink: tumbuh dari tengah saat hover dan saat menu aktif */
+.site-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0.25rem;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease, opacity 0.3s ease, height 0.3s ease;
 }
 
 .site-nav .nav-link:hover,
 .site-nav .nav-link.active {
     color: var(--accent-strong);
-    background: var(--tint);
+}
+
+/* hover: garis tipis dan redup, supaya tidak terlihat seperti pilihan kedua */
+.site-nav .nav-link:hover::after {
+    transform: scaleX(1);
+    height: 2px;
+    opacity: 0.45;
+}
+
+/* menu aktif: garis tebal penuh */
+.site-nav .nav-link.active::after {
+    transform: scaleX(1);
+    height: 3px;
+    opacity: 1;
+}
+
+/* menu mobile: tanpa garis bawah, menu aktif cukup ditandai warna pink dan huruf lebih tebal */
+@media (max-width: 991.98px) {
+    .site-nav .nav-link {
+        padding-inline: 0 !important;
+    }
+
+    .site-nav .nav-link::after {
+        display: none;
+    }
+
+    .site-nav .nav-link.active {
+        font-weight: 600;
+    }
+}
+
+/* pemisah antara deretan menu dan jam */
+.site-nav .nav-clock {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid var(--line);
 }
 
 .theme-toggle {
@@ -157,12 +207,21 @@ html {
 /* ---------- hero ---------- */
 .hero {
     background: linear-gradient(160deg, var(--hero-from), var(--hero-to));
-    padding: 5rem 0 4rem;
+    padding: 3rem 0;
+    /* full layar: tinggi viewport dikurangi navbar (72px), isi di tengah */
+    min-height: calc(100vh - 72px);
+    min-height: calc(100svh - 72px);
+    display: flex;
+    align-items: center;
+}
+
+.hero > .container {
+    width: 100%;
 }
 
 .hero .eyebrow {
     display: inline-block;
-    padding: 0.3rem 0.9rem;
+    padding: 0.25rem 1rem;
     border-radius: 999px;
     background: var(--tint-2);
     color: var(--accent-strong);
@@ -184,11 +243,13 @@ html {
 
 .hero .lead {
     color: var(--muted);
+    line-height: 1.6;
     max-width: 34rem;
 }
 
 .hero-photo {
     width: min(300px, 70vw);
+    max-width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
@@ -202,7 +263,7 @@ html {
     color: var(--on-accent);
     font-weight: 600;
     border-radius: 999px;
-    padding: 0.6rem 1.5rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .btn-accent:hover {
@@ -216,7 +277,7 @@ html {
     color: var(--accent-strong);
     font-weight: 600;
     border-radius: 999px;
-    padding: 0.6rem 1.5rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .btn-ghost:hover {
@@ -224,10 +285,29 @@ html {
     color: var(--accent-strong);
 }
 
+/* jam realtime di navbar: jam di atas, tanggal kecil di bawah */
 .clock {
-    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.2;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.clock-time {
     font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--bs-body-color);
+}
+
+.clock-colon {
+    animation: blink 1s ease-in-out infinite;
+}
+
+.clock-date {
+    font-size: 0.75rem;
+    color: var(--muted);
 }
 
 /* ---------- section ---------- */
@@ -247,10 +327,11 @@ html {
 .section-title h2 {
     font-size: clamp(1.9rem, 4vw, 2.6rem);
     font-weight: 700;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
 }
 
 .section-title p {
+    line-height: 1.5;
     color: var(--muted);
     margin: 0;
 }
@@ -289,7 +370,7 @@ html {
 }
 
 .article-card .body {
-    padding: 1.25rem 1.25rem 0.5rem;
+    padding: 1.5rem 1.5rem 0.5rem;
     flex: 1;
 }
 
@@ -301,7 +382,8 @@ html {
 
 .article-card p {
     color: var(--muted);
-    font-size: 0.93rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
@@ -310,7 +392,7 @@ html {
 }
 
 .article-card .foot {
-    padding: 0.9rem 1.25rem 1.25rem;
+    padding: 1rem 1.5rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -331,6 +413,7 @@ html {
 }
 
 #artikelIsi {
+    line-height: 1.75;
     white-space: pre-line;
     color: var(--bs-body-color);
 }
@@ -372,7 +455,7 @@ html {
     font-weight: 700;
     letter-spacing: 0.08em;
     font-size: 0.85rem;
-    padding: 0.75rem 1.1rem;
+    padding: 0.75rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -381,13 +464,13 @@ html {
 .day-card ul {
     list-style: none;
     margin: 0;
-    padding: 0.4rem 1.1rem 0.6rem;
+    padding: 0.5rem 1rem;
 }
 
 .day-card li {
-    padding: 0.65rem 0;
+    padding: 0.75rem 0;
     border-bottom: 1px dashed var(--line);
-    font-size: 0.93rem;
+    font-size: 0.9375rem;
 }
 
 .day-card li:last-child {
@@ -396,6 +479,7 @@ html {
 
 .day-card li small {
     display: block;
+    line-height: 1.4;
     color: var(--muted);
 }
 
@@ -431,6 +515,10 @@ html {
     object-fit: cover;
     cursor: pointer;
     border: 5px solid var(--tint-2);
+}
+
+.about-card p {
+    line-height: 1.6;
 }
 
 .about-card .nim {
@@ -514,13 +602,13 @@ html {
     border: 1px solid var(--line);
     border-radius: 1.5rem;
     box-shadow: var(--shadow);
-    padding: 2.25rem 2rem;
+    padding: 2.5rem 2rem;
 }
 
 .login-logo {
     width: 64px;
     height: 64px;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .login-brand {
@@ -530,18 +618,66 @@ html {
     color: var(--accent-strong);
 }
 
-.login-card .input-group-text {
-    background: var(--tint);
-    border-color: var(--bs-border-color);
-    color: var(--accent-strong);
+/* kolom isian: latar putih, ikon di dalam kolom */
+.login-card .field {
+    position: relative;
 }
 
-.login-card .btn-outline-secondary {
-    --bs-btn-color: var(--muted);
-    --bs-btn-border-color: var(--bs-border-color);
-    --bs-btn-hover-bg: var(--tint-2);
-    --bs-btn-hover-color: var(--accent-strong);
-    --bs-btn-hover-border-color: var(--bs-border-color);
+.login-card .field .form-control {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    box-shadow: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+/* ikon di dalam kolom, tanpa garis pemisah */
+.login-card .field-icon {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: var(--accent-strong);
+    font-size: 1.1rem;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.login-card .field .form-control.has-toggle {
+    padding-right: 3rem;
+}
+
+/* saat diisi: border pink dan cahaya pink menyala di sekeliling kolom */
+.login-card .field .form-control:focus {
+    background: var(--surface);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(var(--bs-danger-rgb), 0.16),
+                0 0 18px rgba(var(--bs-danger-rgb), 0.35);
+}
+
+.login-card .field .form-control:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px var(--surface) inset;
+    -webkit-text-fill-color: var(--bs-body-color);
+}
+
+.field-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 3rem;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+
+.field-toggle:hover,
+.field-toggle:focus-visible {
+    color: var(--accent-strong);
+    outline: none;
 }
 
 .alert-danger {
@@ -582,6 +718,10 @@ html {
     50% { transform: translate(30px, 22px) scale(1.12); }
 }
 
+@keyframes blink {
+    50% { opacity: 0.25; }
+}
+
 @keyframes shimmer {
     to { background-position: -200% 0; }
 }
@@ -596,20 +736,6 @@ html {
     50% { box-shadow: 0 0 0 10px rgba(var(--bs-danger-rgb), 0); }
 }
 
-/* bar progres scroll */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-    transform: scaleX(0);
-    transform-origin: left;
-    z-index: 2000;
-    pointer-events: none;
-}
-
 /* navbar bayangan saat di-scroll */
 .site-nav {
     transition: box-shadow 0.3s, background-color 0.3s;
@@ -620,7 +746,7 @@ html {
 }
 
 .site-nav .nav-link {
-    transition: color 0.2s, background-color 0.2s;
+    transition: color 0.2s;
 }
 
 /* hero: elemen masuk bergantian */
@@ -666,7 +792,6 @@ html {
 .hero .eyebrow,
 .hero h1,
 .hero .lead,
-.hero .clock,
 .hero .btn {
     animation: fadeUp 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
@@ -674,7 +799,6 @@ html {
 .hero .eyebrow { animation-delay: 0.05s; }
 .hero h1 { animation-delay: 0.18s; }
 .hero .lead { animation-delay: 0.32s; }
-.hero .clock { animation-delay: 0.44s; }
 .hero .btn:nth-of-type(1) { animation-delay: 0.56s; }
 .hero .btn:nth-of-type(2) { animation-delay: 0.66s; }
 
@@ -882,7 +1006,7 @@ html {
     color: #ffffff;
     font-weight: 600;
     border-radius: 999px;
-    padding: 0.6rem 1.5rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .btn-delete:hover {

@@ -106,19 +106,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form action="" method="post">
                 <div class="mb-3">
                     <label for="user" class="form-label fw-semibold">Username</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <div class="field">
+                        <i class="bi bi-person field-icon" aria-hidden="true"></i>
                         <input type="text" id="user" name="user" class="form-control" placeholder="Username"
                             value="<?= htmlspecialchars($_POST['user'] ?? '') ?>" autocomplete="username" required autofocus />
                     </div>
                 </div>
                 <div class="mb-4">
                     <label for="pass" class="form-label fw-semibold">Password</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="password" id="pass" name="pass" class="form-control" placeholder="Password"
+                    <div class="field">
+                        <i class="bi bi-lock field-icon" aria-hidden="true"></i>
+                        <input type="password" id="pass" name="pass" class="form-control has-toggle" placeholder="Password"
                             autocomplete="current-password" required />
-                        <button type="button" class="btn btn-outline-secondary" id="lihat-pass" aria-label="Show password">
+                        <button type="button" class="field-toggle" id="lihat-pass" aria-label="Show password">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>

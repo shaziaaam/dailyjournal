@@ -1,4 +1,4 @@
-// Animasi halaman utama: reveal saat scroll, progres scroll, navbar, dan penanda menu aktif.
+// Animasi halaman utama: reveal saat scroll, navbar, dan penanda menu aktif.
 (function () {
     var kurangiGerak = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -36,21 +36,27 @@
         daftar.forEach(function (el) { el.classList.add("in"); });
     }
 
-    // bar progres scroll + bayangan navbar
-    var bar = document.createElement("div");
-    bar.className = "scroll-progress";
-    document.body.appendChild(bar);
+    // bayangan navbar saat di-scroll
     var nav = document.querySelector(".site-nav");
     var menunggu = false;
 
     function saatScroll() {
-        var tinggi = document.documentElement.scrollHeight - window.innerHeight;
-        bar.style.transform = "scaleX(" + (tinggi > 0 ? window.scrollY / tinggi : 0) + ")";
         if (nav) nav.classList.toggle("scrolled", window.scrollY > 10);
         menunggu = false;
     }
 
+    // menu yang baru diklik dikunci sebagai aktif sampai scroll berhenti,
+    // supaya garis tidak berkedip di menu-menu yang dilewati
+    var kunci = null;
+    var lepasKunci = 0;
+
+    function tundaLepas() {
+        clearTimeout(lepasKunci);
+        lepasKunci = setTimeout(function () { kunci = null; }, 150);
+    }
+
     window.addEventListener("scroll", function () {
+        if (kunci) tundaLepas();
         if (!menunggu) {
             menunggu = true;
             requestAnimationFrame(saatScroll);
@@ -66,10 +72,24 @@
         if (s) sections.push({ link: a, el: s });
     });
 
+    function tandaiAktif(link) {
+        sections.forEach(function (s) {
+            s.link.classList.toggle("active", s.link === link);
+        });
+    }
+
+    links.forEach(function (a) {
+        a.addEventListener("click", function () {
+            kunci = a;
+            tandaiAktif(a);
+            tundaLepas(); // jaga-jaga kalau halaman tidak perlu scroll sama sekali
+        });
+    });
+
     if ("IntersectionObserver" in window) {
         var spy = new IntersectionObserver(function (entries) {
             entries.forEach(function (e) {
-                if (!e.isIntersecting) return;
+                if (!e.isIntersecting || kunci) return;
                 sections.forEach(function (s) {
                     s.link.classList.toggle("active", s.el === e.target);
                 });

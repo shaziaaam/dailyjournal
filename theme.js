@@ -13,14 +13,15 @@
     document.documentElement.setAttribute("data-bs-theme", tema);
 
     document.addEventListener("DOMContentLoaded", function () {
-        var tombol = document.getElementById("theme-toggle");
-        if (!tombol) return;
-        tombol.addEventListener("click", function () {
-            var baru = document.documentElement.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
-            document.documentElement.setAttribute("data-bs-theme", baru);
-            try {
-                localStorage.setItem("tema", baru);
-            } catch (e) {}
+        // bisa lebih dari satu tombol (navbar mobile dan desktop)
+        document.querySelectorAll(".theme-toggle").forEach(function (tombol) {
+            tombol.addEventListener("click", function () {
+                var baru = document.documentElement.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-bs-theme", baru);
+                try {
+                    localStorage.setItem("tema", baru);
+                } catch (e) {}
+            });
         });
     });
 })();

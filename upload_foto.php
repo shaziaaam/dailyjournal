@@ -51,7 +51,6 @@ function upload_foto($File){
         $UploadDestination = "img/". $NewName;
 
 		if (move_uploaded_file($TmpLocation, $UploadDestination)) {
-			//echo "The file has been uploaded.";
 			$message .= $NewName;
 			$hasil['status'] = true;
 		}else{
