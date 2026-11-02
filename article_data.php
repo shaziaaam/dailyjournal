@@ -1,167 +1,150 @@
-<table class="table table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th class="text-center">No</th>
-                        <th class="w-25">Judul</th>
-                        <th class="w-75">Isi</th>
-                        <th class="w-25">Gambar</th>
-                        <th class="w-25">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    include "koneksi.php";
+<?php
+include "session_init.php";
+if (!isset($_SESSION['username'])) {
+    http_response_code(403);
+    exit;
+}
+include "koneksi.php";
+include "admin_ui.php";
 
-                    $hlm = (isset($_POST['hlm'])) ? $_POST['hlm'] : 1;
-                    $limit = 3;
-                    $limit_start = ($hlm - 1) * $limit;
-                    $no = $limit_start + 1;
+// semua artikel ditampilkan dalam satu halaman, tanpa pagination
+// pencarian judul dan isi (prepared statement)
+$q = trim((string)($_POST['q'] ?? ''));
+$where = '';
+$params = [];
+if ($q !== '') {
+    $where = "WHERE judul LIKE ? OR isi LIKE ?";
+    $params = ['%' . $q . '%', '%' . $q . '%'];
+}
 
-                    $sql = "SELECT * FROM article ORDER BY tanggal DESC LIMIT $limit_start, $limit";
-                    $hasil = $conn->query($sql);
+$stmt = $conn->prepare("SELECT * FROM article $where ORDER BY tanggal DESC");
+$stmt->execute($params);
+$daftar = $stmt->fetchAll();
+$total_records = count($daftar);
 
-                    while ($row = $hasil->fetch_assoc()) {
-                    ?>
-                        <tr>
-                            <td><?= $no++ ?></td>
-                            <td>
-                                <strong><?= $row["judul"] ?></strong>
-                                <br>pada : <?= $row["tanggal"] ?>
-                                <br>oleh : <?= $row["username"] ?>
-                            </td>
-                            <td><?= $row["isi"] ?></td>
-                            <td>
-                                <?php
-                                if ($row["gambar"] != '') {
-                                    if (file_exists('img/' . $row["gambar"] . '')) {
-                                ?>
-                                        <img src="img/<?= $row["gambar"] ?>" width="100">
-                                <?php
-                                    }
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <a href="#" title="edit" class="badge rounded-pill text-bg-success" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil"></i></a>
-                                <a href="#" title="delete" class="badge rounded-pill text-bg-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-x-circle"></i></a>
-
-                                <!-- Awal Modal Edit -->
-                                <div class="modal fade" id="modalEdit<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Article</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form method="post" action="" enctype="multipart/form-data">
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label for="formGroupExampleInput" class="form-label">Judul</label>
-                                                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                                                        <input type="text" class="form-control" name="judul" placeholder="Tuliskan Judul Artikel" value="<?= $row["judul"] ?>" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="floatingTextarea2">Isi</label>
-                                                        <textarea class="form-control" placeholder="Tuliskan Isi Artikel" name="isi" required><?= $row["isi"] ?></textarea>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="formGroupExampleInput2" class="form-label">Ganti Gambar</label>
-                                                        <input type="file" class="form-control" name="gambar">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="formGroupExampleInput3" class="form-label">Gambar Lama</label>
-                                                        <?php
-                                                        if ($row["gambar"] != '') {
-                                                            if (file_exists('img/' . $row["gambar"] . '')) {
-                                                        ?>
-                                                                <br><img src="img/<?= $row["gambar"] ?>" width="100">
-                                                        <?php
-                                                            }
-                                                        }
-                                                        ?>
-                                                        <input type="hidden" name="gambar_lama" value="<?= $row["gambar"] ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Akhir Modal Edit -->
-
-                                <!-- Awal Modal Hapus -->
-                                <div class="modal fade" id="modalHapus<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi Hapus Article</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form method="post" action="" enctype="multipart/form-data">
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label for="formGroupExampleInput" class="form-label">Yakin akan menghapus artikel "<strong><?= $row["judul"] ?></strong>"?</label>
-                                                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                                                        <input type="hidden" name="gambar" value="<?= $row["gambar"] ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
-                                                    <input type="submit" value="hapus" name="hapus" class="btn btn-primary">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Akhir Modal Hapus -->
-                            </td>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-</table>
-
-<?php 
-$sql1 = "SELECT * FROM article";
-$hasil1 = $conn->query($sql1); 
-$total_records = $hasil1->num_rows;
+if (!$daftar) {
 ?>
-<p>Total article : <?php echo $total_records; ?></p>
-<nav class="mb-2">
-    <ul class="pagination justify-content-end">
-    <?php
-        $jumlah_page = ceil($total_records / $limit);
-        $jumlah_number = 1; //jumlah halaman ke kanan dan kiri dari halaman yang aktif
-        $start_number = ($hlm > $jumlah_number)? $hlm - $jumlah_number : 1;
-        $end_number = ($hlm < ($jumlah_page - $jumlah_number))? $hlm + $jumlah_number : $jumlah_page;
+    <div class="panel empty-state">
+        <i class="bi bi-journal-x"></i>
+        <?= $q !== '' ? 'No articles match "' . htmlspecialchars($q) . '".' : 'No articles yet. Click "Add Article" to write the first one.' ?>
+    </div>
+<?php
+    exit;
+}
+?>
+<div class="panel table-responsive">
+    <table class="table table-hover align-middle admin-table">
+        <thead>
+            <tr>
+                <th>Article</th>
+                <th class="cell-ringkas-col">Excerpt</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($daftar as $row) {
+                $ada_gambar = $row["gambar"] != '' && file_exists('img/' . $row["gambar"]);
+            ?>
+                <tr>
+                    <td>
+                        <div class="cell-article">
+                            <?php if ($ada_gambar) { ?>
+                                <img src="img/<?= htmlspecialchars($row["gambar"]) ?>" alt="" class="img-popup"
+                                    data-src="img/<?= htmlspecialchars($row["gambar"]) ?>" loading="lazy">
+                            <?php } else { ?>
+                                <span class="noimg"><i class="bi bi-image"></i></span>
+                            <?php } ?>
+                            <div>
+                                <div class="judul"><?= htmlspecialchars($row["judul"] ?? "") ?></div>
+                                <div class="meta"><?= htmlspecialchars(date('M j, Y H:i', strtotime($row["tanggal"] ?? 'now'))) ?> &middot; <?= htmlspecialchars($row["username"] ?? "") ?></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="cell-ringkas cell-ringkas-col"><?= htmlspecialchars(ringkas($row["isi"] ?? "", 130)) ?></td>
+                    <td class="cell-aksi">
+                        <a href="#" title="Edit" aria-label="Edit" class="btn-icon btn-icon-edit" data-bs-toggle="modal" data-bs-target="#modalEdit<?= (int)$row["id"] ?>"><i class="bi bi-pencil-square"></i></a>
+                        <a href="#" title="Delete" aria-label="Delete" class="btn-icon btn-icon-delete" data-bs-toggle="modal" data-bs-target="#modalHapus<?= (int)$row["id"] ?>"><i class="bi bi-trash3"></i></a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
 
-        if($hlm == 1){
-            echo '<li class="page-item disabled"><a class="page-link" href="#">First</a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>';
-        } else {
-            $link_prev = ($hlm > 1)? $hlm - 1 : 1;
-            echo '<li class="page-item halaman" id="1"><a class="page-link" href="#">First</a></li>';
-            echo '<li class="page-item halaman" id="'.$link_prev.'"><a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>';
-        }
+<p class="count-line"><?= $total_records ?> <?= $total_records === 1 ? 'ARTICLE' : 'ARTICLES' ?><?= $q !== '' ? ' FOUND' : '' ?></p>
 
-        for($i = $start_number; $i <= $end_number; $i++){
-            $link_active = ($hlm == $i)? ' active' : '';
-            echo '<li class="page-item halaman '.$link_active.'" id="'.$i.'"><a class="page-link" href="#">'.$i.'</a></li>';
-        }
+<?php
+// modal edit dan hapus ditaruh di luar panel kaca supaya posisinya tidak terganggu efek blur
+foreach ($daftar as $row) {
+    $id = (int)$row["id"];
+    $ada_gambar = $row["gambar"] != '' && file_exists('img/' . $row["gambar"]);
+?>
+    <!-- Awal Modal Edit -->
+    <div class="modal fade" id="modalEdit<?= $id ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="judulEdit<?= $id ?>" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="judulEdit<?= $id ?>">Edit Article</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="<?= $id ?>">
+                        <div class="mb-3">
+                            <label for="editJudul<?= $id ?>" class="form-label">Title</label>
+                            <input type="text" id="editJudul<?= $id ?>" class="form-control" name="judul" placeholder="Enter the article title" value="<?= htmlspecialchars($row["judul"] ?? "") ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editIsi<?= $id ?>" class="form-label">Content</label>
+                            <textarea id="editIsi<?= $id ?>" class="form-control" placeholder="Write the article content" name="isi" required><?= htmlspecialchars($row["isi"] ?? "") ?></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editGambar<?= $id ?>" class="form-label">Change Image</label>
+                            <input type="file" id="editGambar<?= $id ?>" class="form-control js-preview" name="gambar" accept="image/jpeg,image/png,image/gif,image/webp">
+                            <div class="form-text">Leave empty to keep the current image.</div>
+                            <div class="preview-box" hidden><img src="" alt="Selected image preview"></div>
+                        </div>
+                        <?php if ($ada_gambar) { ?>
+                            <div class="mb-3">
+                                <div class="form-label">Current Image</div>
+                                <img class="current-img" src="img/<?= htmlspecialchars($row["gambar"]) ?>" alt="">
+                            </div>
+                        <?php } ?>
+                        <input type="hidden" name="gambar_lama" value="<?= htmlspecialchars($row["gambar"] ?? "") ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" name="simpan" value="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Akhir Modal Edit -->
 
-        if($hlm == $jumlah_page){
-            echo '<li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>';
-            echo '<li class="page-item disabled"><a class="page-link" href="#">Last</a></li>';
-        } else {
-        $link_next = ($hlm < $jumlah_page)? $hlm + 1 : $jumlah_page;
-            echo '<li class="page-item halaman" id="'.$link_next.'"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>';
-            echo '<li class="page-item halaman" id="'.$jumlah_page.'"><a class="page-link" href="#">Last</a></li>';
-        }
-    ?>
-    </ul>
-</nav>
+    <!-- Awal Modal Hapus -->
+    <div class="modal fade" id="modalHapus<?= $id ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="judulHapus<?= $id ?>" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="judulHapus<?= $id ?>">Delete Article</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <p class="mb-1">Are you sure you want to delete this article?</p>
+                        <p class="fw-bold mb-2">"<?= htmlspecialchars($row["judul"] ?? "") ?>"</p>
+                        <p class="text-secondary small mb-0">This also removes its image if no other item uses it. It cannot be undone.</p>
+                        <input type="hidden" name="id" value="<?= $id ?>">
+                        <input type="hidden" name="gambar" value="<?= htmlspecialchars($row["gambar"] ?? "") ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" name="hapus" value="hapus" class="btn btn-delete"><i class="bi bi-trash3"></i> Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Akhir Modal Hapus -->
+<?php } ?>

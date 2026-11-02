@@ -1,0 +1,846 @@
+/* Tampilan admin dan login: sidebar, panel polos dengan garis tipis.
+   Dimuat setelah style.css, memakai variabel warna yang sama (light dan dark). */
+
+:root,
+[data-bs-theme="light"] {
+    --glass: var(--surface);
+    --glass-strong: var(--surface);
+    --edge: #f0d3df;
+    --glow: none;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+[data-bs-theme="dark"] {
+    --glass: var(--surface);
+    --glass-strong: var(--surface);
+    --edge: rgba(255, 46, 147, 0.2);
+    --glow: none;
+}
+
+/* ---------- latar ---------- */
+.admin-body,
+.login-page {
+    position: relative;
+    min-height: 100vh;
+}
+
+/* latar polos mengikuti warna tema */
+.admin-body {
+    background: var(--bs-body-bg);
+}
+
+/* ---------- kerangka: sidebar + konten ---------- */
+/* tanpa z-index di sini: z-index membuat "stacking context" yang membuat modal berada di bawah lapisan gelap (backdrop) */
+.admin-shell {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1rem;
+    background: var(--glass);
+    border-right: 1px solid var(--edge);
+}
+
+.side-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.25rem 0.5rem 1.25rem;
+    text-decoration: none;
+    color: var(--accent-strong);
+}
+
+.side-brand img {
+    width: 38px;
+    height: 38px;
+}
+
+.side-brand span {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.1;
+}
+
+.side-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.5rem 0.75rem;
+}
+
+.side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.side-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.8rem;
+    color: var(--bs-body-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.side-link i {
+    font-size: 1.1rem;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+
+.side-link:hover {
+    background: var(--tint-2);
+    color: var(--accent-strong);
+    transform: translateX(3px);
+}
+
+.side-link:hover i {
+    color: var(--accent);
+}
+
+.side-link.active {
+    background: var(--tint-2);
+    color: var(--accent-strong);
+}
+
+.side-link.active i {
+    color: var(--accent);
+}
+
+.side-link.active::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 18%;
+    bottom: 18%;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: var(--accent);
+}
+
+.side-foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+}
+
+.side-foot .side-link {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--muted);
+}
+
+.side-user {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.4rem 0.5rem;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 700;
+    border: 2px solid var(--edge);
+}
+
+.side-user .who {
+    flex: 1;
+    min-width: 0;
+}
+
+.side-user .btn-logout {
+    flex-shrink: 0;
+    border-color: transparent;
+    background: transparent;
+    color: var(--muted);
+}
+
+.side-user .btn-logout:hover {
+    background: var(--tint-2);
+    border-color: var(--line);
+    color: var(--accent-strong);
+}
+
+.side-user .name {
+    font-weight: 700;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.side-user small {
+    display: block;
+    color: var(--muted);
+    font-size: 0.72rem;
+}
+
+.admin-main {
+    min-width: 0;
+    padding: 2rem clamp(1rem, 3vw, 2.5rem) 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-scrim {
+    display: none;
+}
+
+/* bar atas: tombol tema di kanan; tombol menu dan nama hanya muncul di layar kecil */
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: -0.5rem 0 1rem;
+}
+
+.admin-topbar .burger,
+.admin-topbar .brand {
+    display: none;
+}
+
+/* ---------- judul halaman ---------- */
+.page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    letter-spacing: -0.02em;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.page-sub {
+    color: var(--muted);
+    margin: 0.25rem 0 0;
+}
+
+.page-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* ---------- panel kaca ---------- */
+.panel {
+    background: var(--glass);
+    border: 1px solid var(--edge);
+    border-radius: 1.25rem;
+    box-shadow: var(--glow);
+}
+
+.panel-pad {
+    padding: 1.25rem 1.4rem;
+}
+
+/* ---------- pencarian ---------- */
+.search-box {
+    position: relative;
+    min-width: 240px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+}
+
+.search-box input {
+    padding-left: 2.6rem;
+    border-radius: 999px;
+    background: var(--glass-strong);
+    border: 1px solid var(--edge);
+}
+
+/* ---------- dashboard ---------- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.stat {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    padding: 1.25rem 1.4rem;
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.stat:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    color: inherit;
+}
+
+.stat .stat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.stat .stat-num {
+    font-family: var(--mono);
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 0.4rem;
+    color: var(--accent-strong);
+}
+
+.stat .stat-note {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.panel-title {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0 0 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.panel-title i {
+    color: var(--accent);
+}
+
+.recent-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.recent-list li + li {
+    border-top: 1px dashed var(--line);
+}
+
+.recent-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.7rem 0.25rem;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.recent-list a:hover {
+    background: var(--tint-2);
+}
+
+.recent-list img {
+    width: 64px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 0.6rem;
+    flex-shrink: 0;
+}
+
+.recent-list .t {
+    font-weight: 600;
+    line-height: 1.3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.recent-list small {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+}
+
+/* ---------- tabel artikel ---------- */
+.admin-table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-hover-bg: var(--tint-2);
+    --bs-table-hover-color: var(--bs-body-color);
+    --bs-table-border-color: var(--line);
+    margin: 0;
+}
+
+.admin-table thead th {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border-bottom: 1px solid var(--edge);
+    padding: 0.9rem 1rem;
+    white-space: nowrap;
+}
+
+.admin-table td {
+    padding: 0.85rem 1rem;
+    vertical-align: middle;
+}
+
+.cell-article {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    min-width: 260px;
+}
+
+.cell-article img,
+.cell-article .noimg {
+    width: 84px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 0.7rem;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    cursor: zoom-in;
+}
+
+.cell-article .noimg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tint-2);
+    color: var(--muted);
+    cursor: default;
+}
+
+.cell-article .judul {
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cell-article .meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+}
+
+.cell-ringkas {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 420px;
+}
+
+.cell-aksi {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.count-line {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0.9rem 0.25rem 0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+}
+
+.empty-state i {
+    display: block;
+    font-size: 2.2rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+/* ---------- grid galeri ---------- */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1rem;
+}
+
+.photo-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--edge);
+    background: var(--glass-strong);
+    box-shadow: var(--glow);
+    transition: transform 0.25s, border-color 0.25s;
+}
+
+.photo-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.photo-card .photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    cursor: zoom-in;
+    transition: transform 0.5s;
+}
+
+.photo-card:hover .photo {
+    transform: scale(1.05);
+}
+
+.photo-card .photo-meta {
+    padding: 0.6rem 0.85rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+}
+
+.photo-card .photo-actions {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: flex;
+    gap: 0.4rem;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.photo-card .photo-actions .btn-icon {
+    background: var(--glass-strong);
+    margin: 0;
+}
+
+.photo-card:hover .photo-actions,
+.photo-card:focus-within .photo-actions {
+    opacity: 1;
+    transform: none;
+}
+
+@media (hover: none) {
+    .photo-card .photo-actions {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ---------- form & modal ---------- */
+.modal-content {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 1.25rem;
+    box-shadow: var(--glow);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--line);
+}
+
+.modal-title {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.modal-body .form-label,
+.modal-body label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+}
+
+.modal-body textarea.form-control {
+    min-height: 170px;
+    resize: vertical;
+}
+
+input.form-control[type="file"] {
+    padding: 1.1rem 1rem;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: var(--edge);
+    background: var(--tint);
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+input.form-control[type="file"]:hover {
+    border-color: var(--accent);
+    background: var(--tint-2);
+}
+
+.preview-box {
+    margin-top: 0.75rem;
+}
+
+.preview-box img {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 0.9rem;
+    border: 1px solid var(--edge);
+}
+
+.current-img {
+    max-height: 120px;
+    border-radius: 0.8rem;
+    border: 1px solid var(--line);
+}
+
+/* ---------- toast ---------- */
+.toast-wrap {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: calc(100vw - 2.5rem);
+}
+
+.toast-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 1.1rem;
+    border-radius: 0.95rem;
+    background: var(--glass-strong);
+    border: 1px solid var(--edge);
+    box-shadow: var(--glow), 0 10px 30px rgba(0, 0, 0, 0.18);
+    font-weight: 600;
+    animation: toastIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.toast-item i {
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+.toast-item.err {
+    border-color: #dc3545;
+}
+
+.toast-item.err i {
+    color: #dc3545;
+}
+
+.toast-item.keluar {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------- profil ---------- */
+.profile-card {
+    max-width: 640px;
+    padding: 1.6rem;
+}
+
+.profile-photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--edge);
+}
+
+/* ---------- animasi masuk (hanya pada panel, bukan pada pembungkus modal) ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .toast-item {
+        animation: none;
+    }
+}
+
+/* ---------- layar kecil: sidebar jadi menu geser ---------- */
+@media (max-width: 991.98px) {
+    .admin-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-sidebar {
+        position: fixed;
+        z-index: 1040;
+        left: 0;
+        top: 0;
+        width: 280px;
+        max-width: 85vw;
+        transform: translateX(-102%);
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        background: var(--glass-strong);
+    }
+
+    .side-link.active::before {
+        left: -1rem;
+    }
+
+    body.sidebar-open .admin-sidebar {
+        transform: none;
+    }
+
+    .sidebar-scrim {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1039;
+        background: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+    }
+
+    body.sidebar-open .sidebar-scrim {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .admin-topbar .burger {
+        display: inline-flex;
+        width: 42px;
+        height: 42px;
+        border-radius: 0.8rem;
+        border: 1px solid var(--edge);
+        background: var(--glass-strong);
+        color: var(--accent-strong);
+        font-size: 1.3rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-topbar .brand {
+        display: inline;
+        font-family: "Playfair Display", Georgia, serif;
+        font-style: italic;
+        font-weight: 700;
+        color: var(--accent-strong);
+        font-size: 1.15rem;
+    }
+
+}
+
+@media (max-width: 575.98px) {
+    .search-box {
+        min-width: 0;
+        flex: 1 1 100%;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+    }
+
+    .cell-ringkas-col {
+        display: none;
+    }
+}
+
+/* ---------- login: kartu kaca senada admin ---------- */
+.login-page .login-wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.login-page .login-card {
+    background: var(--glass);
+    border: 1px solid var(--edge);
+    box-shadow: var(--glow);
+}
+
+.login-page .login-brand {
+    font-family: "Playfair Display", Georgia, serif;
+}
+
+/* ---------- gerak saat pindah halaman lewat sidebar ---------- */
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes barGrow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* tiap blok di halaman muncul bergantian; fill-mode "backwards" supaya tidak ada sisa transform setelah selesai */
+    .page-enter > * {
+        animation: pageIn 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    }
+
+    .page-enter > *:nth-child(2) { animation-delay: 70ms; }
+    .page-enter > *:nth-child(3) { animation-delay: 140ms; }
+    .page-enter > *:nth-child(4) { animation-delay: 210ms; }
+    .page-enter > *:nth-child(n+5) { animation-delay: 280ms; }
+
+    /* penanda menu aktif tumbuh dari tengah */
+    .side-link.active::before {
+        transform-origin: center;
+        animation: barGrow 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s backwards;
+    }
+
+    /* halaman lama memudar sebelum pindah */
+    .page-enter {
+        transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .page-enter.page-leaving {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+}

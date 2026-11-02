@@ -10,85 +10,90 @@ if (!isset($_SESSION['username'])) {
 // Ambil data user berdasarkan username dari session
 $username = $_SESSION['username'];
 $stmt = $conn->prepare("SELECT * FROM user WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$stmt->execute([$username]);
+$user = $stmt->fetch();
 
 if (!$user) {
-    echo "<script>alert('User tidak ditemukan!'); document.location='logout.php';</script>";
+    echo "<script>document.location='logout.php';</script>";
     exit;
 }
 ?>
 
-<div class="container mt-4">
-    <form method="post" action="" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-        <input type="hidden" name="foto_lama" value="<?php echo $user['foto']; ?>">
+<div class="page-head">
+    <div>
+        <h1 class="page-title">Profile</h1>
+        <p class="page-sub">Change your password or profile photo.</p>
+    </div>
+</div>
 
-        <div class="mb-3">
-            <label for="password" class="form-label" style="font-size: 18px;">Ganti Password</label>
-            <input type="password" class="form-control" name="password" placeholder="Tuliskan Password Baru Jika Ingin Mengganti Password Saja">
+<div class="panel profile-card">
+    <form method="post" action="" enctype="multipart/form-data">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <?php if (!empty($user['foto']) && is_file("img/" . $user['foto'])) { ?>
+                <img class="profile-photo" src="img/<?= htmlspecialchars($user['foto']) ?>" alt="Profile photo">
+            <?php } else { ?>
+                <span class="avatar profile-photo fs-2"><?= htmlspecialchars(strtoupper(mb_substr($user['username'], 0, 1))) ?></span>
+            <?php } ?>
+            <div>
+                <div class="fw-bold fs-5"><?= htmlspecialchars($user['username']) ?></div>
+                <div class="text-secondary small">Signed in as admin</div>
+            </div>
         </div>
         <div class="mb-3">
-            <label for="foto" class="form-label" style="font-size: 18px;">Ganti Foto Profil</label>
-            <input type="file" class="form-control" name="foto">
+            <label for="password" class="form-label">Change Password</label>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Enter a new password only if you want to change it" autocomplete="new-password">
         </div>
-        <div class="mb-3">
-            <label for="foto" class="form-label" style="font-size: 18px;">Foto Profil Saat Ini</label><br>
-            <img src="img/<?php echo htmlspecialchars($user['foto']); ?>" width="100px">
+        <div class="mb-4">
+            <label for="foto" class="form-label">Change Profile Photo</label>
+            <input type="file" id="foto" class="form-control js-preview" name="foto" accept="image/jpeg,image/png,image/gif,image/webp">
+            <div class="form-text">JPG, PNG, GIF, or WebP. Large photos are resized automatically.</div>
+            <div class="preview-box" hidden><img src="" alt="Selected image preview"></div>
         </div>
-        <button type="submit" name="simpan" class="btn btn-primary">simpan</button>
+        <button type="submit" name="simpan" class="btn btn-accent"><i class="bi bi-check2-circle"></i> Save</button>
     </form>
 </div>
 
 <?php
 // Tombol simpan
 if (isset($_POST['simpan'])) {
-    $id = $_POST['id'];
-    $password = $_POST['password'];
-    $foto_lama = $_POST['foto_lama'];
+    // id dan foto lama diambil dari akun yang sedang login, bukan dari form
+    $id = $user['id'];
+    $password = (string)$_POST['password'];
+    $foto_lama = (string)$user['foto'];
     $foto_baru = $foto_lama;
 
     // Proses upload foto jika ada
-    if ($_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "img/";
-        $target_file = $target_dir . basename($_FILES['foto']['name']);
-        $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    if ($_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+        include_once "upload_foto.php";
+        $cek_upload = upload_foto($_FILES['foto']);
 
-        // Validasi format file
-        if (in_array($file_type, ['jpg', 'jpeg', 'png'])) {
-            if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
-                $foto_baru = basename($_FILES['foto']['name']);
-
-                // Hapus foto lama jika ada
-                if ($foto_lama && file_exists("img/$foto_lama")) {
-                    unlink("img/$foto_lama");
-                }
-            } else {
-                echo "<script>alert('Error saat mengunggah foto.');</script>";
-                exit;
-            }
+        if ($cek_upload['status']) {
+            $foto_baru = $cek_upload['message'];
         } else {
-            echo "<script>alert('Format file tidak diizinkan.');</script>";
+            toast_redirect($cek_upload['message'], 'err', 'admin.php?page=profil');
             exit;
         }
     }
 
     // Proses update ke database
-    if (!empty($password)) {
-        $password_hashed = md5($password); // Hash password dengan MD5
+    if ($password !== '') {
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("UPDATE user SET password = ?, foto = ? WHERE id = ?");
-        $stmt->bind_param("ssi", $password_hashed, $foto_baru, $id);
+        $params = [$password_hashed, $foto_baru, $id];
     } else {
         $stmt = $conn->prepare("UPDATE user SET foto = ? WHERE id = ?");
-        $stmt->bind_param("si", $foto_baru, $id);
+        $params = [$foto_baru, $id];
     }
 
-    if ($stmt->execute()) {
-        echo "<script>alert('Data berhasil diperbarui!'); document.location='profil.php';</script>";
+    if ($stmt->execute($params)) {
+        // Hapus foto lama jika sudah diganti dan tidak dipakai di tempat lain
+        if ($foto_baru !== $foto_lama) {
+            include_once "upload_foto.php";
+            hapus_gambar($conn, $foto_lama);
+        }
+        toast_redirect('Profile updated successfully', 'ok', 'admin.php?page=profil');
     } else {
-        echo "<script>alert('Data gagal diperbarui: " . $conn->error . "');</script>";
+        toast_redirect('Failed to update profile: ' . $stmt->errorInfo()[2], 'err', 'admin.php?page=profil');
     }
 }
 ?>
